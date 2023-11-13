@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.niji.claudio.android">
+    <application
+            android:requestLegacyExternalStorage="true"
+            android:name="com.niji.claudio.common.ClaudioApplication"
+            android:allowBackup="true"
+            android:supportsRtl="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Claudio"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+    </application>
+</manifest>

@@ -1,0 +1,73 @@
+name: Claudio - Java CI with Gradle
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  build_android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Build bundle debug
+        id: build_bundle_debug
+        run: |
+          touch local.properties
+          cp appAndroid/fake-google-services.json appAndroid/google-services.json
+          ./gradlew clean :appAndroid:bundleDebug
+      - name: Archive aab bundle debug
+        uses: actions/upload-artifact@v3
+        with:
+          name: aab-bundle
+          path: appAndroid/build/outputs/bundle/debug/*.aab
+
+  build_desktop:
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Build desktop app ${{ matrix.os }}
+        id: build_desktop
+        run: |
+          touch local.properties
+          ./gradlew packageUberJarForCurrentOS
+      - name: Archive jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: desktop-${{ matrix.os }}
+          path: appDesktop/build/compose/jars/*.jar
+
+  send_hook_success:
+    needs: [ build_android, build_desktop ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hook Success
+        # TODO rule ->  if: steps.build_bundle_debug.outcome == 'success' && steps.build_desktop.outcome == 'success'
+        run: |
+          curl -X POST "https://hooks.slack.com/services/${SLACK_END_URL}" \
+            -H "accept: application/json" \
+            -d '{
+                "text":"New Claudio version '$GITHUB_REF_NAME':rocket:\n Check artifacts 
+                <https://github.com/'$GITHUB_REPOSITORY'/actions/runs/'$GITHUB_RUN_ID'|here>
+                :white_check_mark:"
+            }'

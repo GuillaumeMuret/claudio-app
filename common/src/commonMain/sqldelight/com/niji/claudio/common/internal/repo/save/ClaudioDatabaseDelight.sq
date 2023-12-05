@@ -1,0 +1,65 @@
+CREATE TABLE MediaDelight (
+    serverId TEXT NOT NULL PRIMARY KEY,
+    filePath TEXT DEFAULT NULL,
+    filename TEXT DEFAULT NULL,
+    durationSec TEXT DEFAULT NULL, -- TODO FLOAT
+    url TEXT DEFAULT NULL,
+    title TEXT DEFAULT NULL,
+    category TEXT DEFAULT NULL,
+    isDownloaded INTEGER AS Boolean DEFAULT NULL,
+    playCount INTEGER DEFAULT NULL,
+    size INTEGER DEFAULT NULL,
+    fromTitle TEXT DEFAULT NULL,
+    isFavorite INTEGER AS Boolean DEFAULT NULL,
+    createdAt TEXT DEFAULT NULL
+);
+
+saveMedia:
+INSERT OR REPLACE INTO MediaDelight(
+    serverId,
+    filePath,
+    filename,
+    durationSec,
+    url,
+    title,
+    category,
+    isDownloaded,
+    playCount,
+    size,
+    fromTitle,
+    isFavorite,
+    createdAt
+)
+VALUES(
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+
+deleteMediaByServerId:
+DELETE FROM MediaDelight
+WHERE serverId = ?;
+
+getMedias:
+SELECT MediaDelight.*
+FROM MediaDelight;
+
+getDownloadedMedias:
+SELECT *
+FROM MediaDelight
+WHERE isDownloaded = 1;
+
+getFavoriteMedias:
+SELECT *
+FROM MediaDelight
+WHERE isFavorite = 1;

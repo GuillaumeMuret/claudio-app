@@ -9,7 +9,7 @@ import com.niji.claudio.common.data.save.IMediaDatabase
 import com.niji.claudio.common.tool.LogUtils
 
 
-class MediaRepository(
+class MediaRepositoryFiles(
     private val api: IClaudioApi,
     private val database: IMediaDatabase,
 ) : AbstractRepository(), IMediaRepository {
@@ -27,31 +27,37 @@ class MediaRepository(
         if (mustReload) {
             val responseResource = sendGeneric(api::getMedias)
             if (responseResource is Resource.Success) {
-                responseResource.data?.let { serverMedias ->
-                    // Manage downloaded and favorite medias
-                    val downloadedMedias = database.getDownloadedMedias()
-                    val favoriteMedias = database.getFavoriteMedias()
-                    downloadedMedias.forEach { downloadedMedia ->
-                        serverMedias.find { it.serverId == downloadedMedia.serverId }?.apply {
-                            isDownloaded = true
-                            isDownloadedState = true
-                            filePath = downloadedMedia.filePath
-                        }
-                    }
-                    favoriteMedias.forEach { favoriteMedia ->
-                        serverMedias.find { it.serverId == favoriteMedia.serverId }?.apply {
-                            isFavorite = true
-                            isFavoriteState = true
-                        }
-                    }
-                    // Save in database
-                    database.saveMedias(serverMedias)
+                responseResource.data?.let {
+                    database.saveMedias(it)
+                    getMediasCache = it.toMutableList()
                     mustReload = false
                 }
             }
+        }
+        if (getMediasCache == null) {
             getMediasCache = database.getMedias().toMutableList()
         }
-        getMediasCache = database.getMedias().toMutableList()
+        // Manage downloaded and favorite medias
+        val downloadedMedias = database.getDownloadedMedias()
+        val favoriteMedias = database.getFavoriteMedias()
+        getMediasCache?.let { safeMediasCache ->
+            downloadedMedias.forEach { downloadedMediaItem ->
+                safeMediasCache.find { it.serverId == downloadedMediaItem.serverId }?.let { foundedMedia ->
+                    safeMediasCache[safeMediasCache.indexOf(foundedMedia)] = foundedMedia.apply {
+                        isDownloaded = true
+                        isDownloadedState = true
+                        filePath = downloadedMediaItem.filePath
+                    }
+                }
+            }
+            safeMediasCache.forEach { mediaItem ->
+                safeMediasCache[safeMediasCache.indexOf(mediaItem)].apply {
+                    val isFavoriteValue = favoriteMedias.find { it.serverId == mediaItem.serverId } != null
+                    isFavorite = isFavoriteValue
+                    isFavoriteState = isFavoriteValue
+                }
+            }
+        }
         return filterMedia(query, isFavoriteMode)
     }
 
@@ -96,11 +102,10 @@ class MediaRepository(
         return getMedia(media.serverId)?.url?.let {
             val downloadedMedia = api.downloadMedia(it, media)
             database.saveDownloadedMedia(
-                media.apply {
-                    isDownloaded = true
-                    isDownloadedState = true
+                Media(
+                    serverId = downloadedMedia.serverId,
                     filePath = downloadedMedia.filePath
-                }
+                )
             )
             downloadedMedia
         }
@@ -133,7 +138,16 @@ class MediaRepository(
     }
 
     override suspend fun setFavoriteMediaUseCase(media: Media) {
-        database.setFavoriteMedias(listOf(media.apply { isFavorite = isFavorite == false }))
+        val favoriteMedias = database.getFavoriteMedias().toMutableList()
+        if (favoriteMedias.find { it.serverId == media.serverId } == null) {
+            favoriteMedias.add(Media(serverId = media.serverId))
+            media.isFavorite = true
+        } else {
+            val favoriteMedia = favoriteMedias.find { it.serverId == media.serverId }
+            favoriteMedia?.let { favoriteMedias.remove(it) }
+            media.isFavorite = false
+        }
+        database.setFavoriteMedias(favoriteMedias)
     }
 
     companion object {

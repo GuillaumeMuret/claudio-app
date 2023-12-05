@@ -28,6 +28,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(Libs.pluginGoogleServices)
         classpath(Libs.buildkonfigGradlePlugin)
+        classpath("com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelightVersion}")
         // To check dependencies updates
         classpath("com.github.ben-manes:gradle-versions-plugin:0.38.0")
     }

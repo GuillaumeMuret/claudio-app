@@ -14,6 +14,7 @@ plugins {
     id("com.android.library")
     id("com.codingfeline.buildkonfig")
     id("com.github.ben-manes.versions")
+    id("com.squareup.sqldelight")
 }
 
 val properties = getMyProperties()
@@ -71,6 +72,8 @@ kotlin {
                 /* TODO use it when the Apple targets will be available through JitPack
                 implementation(Libs.mqtt)
                 implementation(Libs.mqttClient) */
+
+                implementation("com.squareup.sqldelight:runtime:${Versions.sqlDelightVersion}")
             }
         }
         val jvm by creating {
@@ -86,13 +89,16 @@ kotlin {
                 implementation(Libs.ktorClientAndroid)
                 implementation(Libs.media3ExoPlayer)
                 implementation(Libs.media3Ui)
+                implementation("com.squareup.sqldelight:android-driver:${Versions.sqlDelightVersion}")
             }
         }
         val desktopMain by getting {
             dependsOn(jvm)
             dependencies {
                 implementation(compose.desktop.common)
+                implementation(compose.desktop.currentOs)
                 implementation(Libs.ktorClientJava)
+                implementation("com.squareup.sqldelight:sqlite-driver:${Versions.sqlDelightVersion}")
             }
         }
         val iosMain by creating {
@@ -100,6 +106,7 @@ kotlin {
             dependencies {
                 implementation(Libs.ktorClientIos)
                 implementation(Libs.gson)
+                implementation("com.squareup.sqldelight:native-driver:${Versions.sqlDelightVersion}")
             }
         }
         val iosX64Main by getting {
@@ -115,6 +122,7 @@ kotlin {
             dependencies {
                 implementation(compose.html.core)
                 implementation(compose.runtime)
+                implementation("com.squareup.sqldelight:sqljs-driver:${Versions.sqlDelightVersion}")
             }
         }
     }
@@ -199,6 +207,12 @@ buildkonfig {
             "IS_USING_FCM",
             properties.getProperty("IS_USING_FCM") ?: "true"
         )
+    }
+}
+
+sqldelight {
+    database("ClaudioDatabaseDelight") {
+        packageName = "com.niji.claudio.common.internal.repo.save"
     }
 }
 

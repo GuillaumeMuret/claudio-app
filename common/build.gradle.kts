@@ -30,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "shared"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -214,6 +215,7 @@ sqldelight {
     database("ClaudioDatabaseDelight") {
         packageName = "com.niji.claudio.common.internal.repo.save"
     }
+    linkSqlite = true
 }
 
 fun getMyProperties(propertyFileName: String = "local"): Properties {

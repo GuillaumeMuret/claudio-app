@@ -16,7 +16,6 @@ import com.niji.claudio.common.internal.repo.DataLogRepository
 import com.niji.claudio.common.internal.repo.DeviceRepository
 import com.niji.claudio.common.internal.repo.HookRepository
 import com.niji.claudio.common.internal.repo.MediaRepository
-import com.niji.claudio.common.internal.repo.MediaRepositoryFiles
 import com.niji.claudio.common.internal.repo.PlayerRepository
 import com.niji.claudio.common.internal.repo.PlayerRepositoryMqtt
 import com.niji.claudio.common.internal.repo.UserRepository
@@ -35,9 +34,8 @@ object RepositoryLocator : IRepositoryLocator {
     private val claudioDatabase: IClaudioDatabase = ClaudioDatabase()
     private val database: IClaudioDatabase = Database(DatabaseDriverFactory())
 
-    override val deviceRepository: IDeviceRepository = DeviceRepository(claudioApi, claudioDatabase)
-    // val mediaRepository: IMediaRepository = MediaRepositoryFiles(claudioApi, database)
     override val mediaRepository: IMediaRepository = MediaRepository(claudioApi, database)
+    override val deviceRepository: IDeviceRepository = DeviceRepository(claudioApi, database)
     override val userRepository: IUserRepository =
         UserRepository(claudioApi, claudioDatabase, deviceRepository)
     override val playerRepository: IPlayerRepository = if (BuildKonfig.IS_USING_FCM) {

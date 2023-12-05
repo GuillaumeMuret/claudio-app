@@ -10,26 +10,6 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
     private val database = ClaudioDatabaseDelight(databaseDriverFactory.createDriver())
     private val dbQuery = database.claudioDatabaseDelightQueries
 
-    override suspend fun getDevices(): List<Device> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun saveDevices(devices: List<Device>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun setFavoriteMedias(medias: List<Media>) {
-        saveMedias(medias)
-    }
-
-    override suspend fun saveDownloadedMedia(downloadedMedia: Media) {
-        saveMedias(listOf(downloadedMedia))
-    }
-
-    override suspend fun deleteMedia(media: Media) {
-        media.serverId?.let { deleteMediaByServerId(it) }
-    }
-
     override suspend fun getUser(): User {
         TODO("Not yet implemented")
     }
@@ -48,6 +28,14 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
 
     override suspend fun addDataLog(dataLog: DataLog) {
         TODO("Not yet implemented")
+    }
+
+    // ############################################################################
+    // Medias
+    // ############################################################################
+
+    override suspend fun getMedias(): List<Media> {
+        return dbQuery.getMedias(::mapMediaSelecting).executeAsList()
     }
 
     override suspend fun saveMedias(medias: List<Media>) {
@@ -74,14 +62,22 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
         }
     }
 
+    override suspend fun setFavoriteMedias(medias: List<Media>) {
+        saveMedias(medias)
+    }
+
+    override suspend fun saveDownloadedMedia(downloadedMedia: Media) {
+        saveMedias(listOf(downloadedMedia))
+    }
+
+    override suspend fun deleteMedia(media: Media) {
+        media.serverId?.let { deleteMediaByServerId(it) }
+    }
+
     private fun deleteMediaByServerId(serverId: String) {
         dbQuery.transaction {
             dbQuery.deleteMediaByServerId(serverId)
         }
-    }
-
-    override suspend fun getMedias(): List<Media> {
-        return dbQuery.getMedias(::mapMediaSelecting).executeAsList()
     }
 
     override suspend fun getDownloadedMedias(): List<Media> {
@@ -121,6 +117,40 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
             fromTitle = fromTitle,
             isFavorite = isFavorite == true,
             createdAt = createdAt,
+        )
+    }
+
+    // ############################################################################
+    // Devices
+    // ############################################################################
+
+    override suspend fun getDevices(): List<Device> {
+        return dbQuery.getDevices(::mapDeviceSelecting).executeAsList()
+    }
+
+    override suspend fun saveDevices(devices: List<Device>) {
+        dbQuery.transaction {
+            devices.forEach { device ->
+                device.serverId?.let { serverId ->
+                    dbQuery.addDevice(
+                        serverId = serverId,
+                        name = device.name,
+                        pushToken = device.pushToken,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun mapDeviceSelecting(
+        serverId: String?,
+        name: String?,
+        pushToken: String?,
+    ): Device {
+        return Device(
+            serverId = serverId,
+            name = name,
+            pushToken = pushToken
         )
     }
 }

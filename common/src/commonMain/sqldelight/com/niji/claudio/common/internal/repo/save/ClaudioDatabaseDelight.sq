@@ -1,8 +1,11 @@
+-- ##########################################################################
+-- MEDIA
+-- ##########################################################################
 CREATE TABLE MediaDelight (
     serverId TEXT NOT NULL PRIMARY KEY,
     filePath TEXT DEFAULT NULL,
     filename TEXT DEFAULT NULL,
-    durationSec TEXT DEFAULT NULL, -- TODO FLOAT
+    durationSec TEXT DEFAULT NULL, -- FLOAT
     url TEXT DEFAULT NULL,
     title TEXT DEFAULT NULL,
     category TEXT DEFAULT NULL,
@@ -63,3 +66,38 @@ getFavoriteMedias:
 SELECT *
 FROM MediaDelight
 WHERE isFavorite = 1;
+
+-- ##########################################################################
+-- Device
+-- ##########################################################################
+
+CREATE TABLE DeviceDelight (
+    serverId TEXT NOT NULL PRIMARY KEY,
+    name TEXT DEFAULT NULL,
+    pushToken TEXT DEFAULT NULL
+);
+
+getDevices:
+SELECT DeviceDelight.*
+FROM DeviceDelight;
+
+addDevice:
+INSERT OR REPLACE INTO DeviceDelight(
+    serverId,
+    name,
+    pushToken
+)
+VALUES(
+    ?,
+    ?,
+    ?
+);
+
+deleteDeviceByServerId:
+DELETE FROM DeviceDelight
+WHERE serverId = ?;
+
+-- ##########################################################################
+-- User
+-- ##########################################################################
+

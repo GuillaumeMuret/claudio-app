@@ -8,7 +8,8 @@ import com.niji.claudio.common.data.model.Device
 import com.niji.claudio.common.data.save.IDeviceDatabase
 
 
-class DeviceRepository(private val api: IClaudioApi, private val database: IDeviceDatabase) : AbstractRepository(),
+class DeviceRepository(private val api: IClaudioApi, private val database: IDeviceDatabase) :
+    AbstractRepository(),
     IDeviceRepository {
 
     private var getDevicesCache: List<Device>? = null
@@ -19,14 +20,11 @@ class DeviceRepository(private val api: IClaudioApi, private val database: IDevi
             if (responseResource is Resource.Success) {
                 responseResource.data?.let {
                     database.saveDevices(it)
-                    getDevicesCache = it
                     mustReload = false
                 }
             }
         }
-        if (getDevicesCache == null) {
-            getDevicesCache = database.getDevices()
-        }
+        getDevicesCache = database.getDevices()
         return getDevicesCache ?: listOf()
     }
 
@@ -53,9 +51,5 @@ class DeviceRepository(private val api: IClaudioApi, private val database: IDevi
         } else {
             null
         }
-    }
-
-    companion object {
-        private const val TAG = "DeviceRepository"
     }
 }

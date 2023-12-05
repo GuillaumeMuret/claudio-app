@@ -49,7 +49,6 @@ class MediaRepository(
                     mustReload = false
                 }
             }
-            getMediasCache = database.getMedias().toMutableList()
         }
         getMediasCache = database.getMedias().toMutableList()
         return filterMedia(query, isFavoriteMode)

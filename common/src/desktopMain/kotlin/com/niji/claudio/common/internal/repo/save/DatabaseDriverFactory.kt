@@ -12,6 +12,11 @@ actual class DatabaseDriverFactory {
         } catch (e: Exception) {
             LogUtils.e(TAG, "Error in DatabaseDriverFactory", e)
         }
+        ClaudioDatabaseDelight.Schema.migrate(
+            driver = driver,
+            oldVersion = 0,
+            newVersion = ClaudioDatabaseDelight.Schema.version,
+        )
         return driver
     }
 

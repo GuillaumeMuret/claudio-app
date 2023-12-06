@@ -18,8 +18,9 @@ class DeviceRepository(private val api: IClaudioApi, private val database: IDevi
         if (mustReload) {
             val responseResource = sendGeneric(api::getDevices)
             if (responseResource is Resource.Success) {
-                responseResource.data?.let {
-                    database.saveDevices(it)
+                responseResource.data?.let { deviceList ->
+                    database.deleteAllDevice()
+                    database.saveDevices(deviceList)
                     mustReload = false
                 }
             }

@@ -89,7 +89,7 @@ class UserRepository(
         updateUser(user)
     }
 
-    override suspend fun setBtnClick(btn: String): Boolean {
+    override suspend fun setToggleAdminBtnClick(btn: String): Boolean {
         var mustReload = false
         if (SEQUENCE_TOGGLE_ADMIN.getOrNull(indexToggleAdmin) == btn) {
             ++indexToggleAdmin

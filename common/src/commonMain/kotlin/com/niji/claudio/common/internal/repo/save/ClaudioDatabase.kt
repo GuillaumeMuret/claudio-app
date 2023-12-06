@@ -13,6 +13,8 @@ expect class ClaudioDatabase() : IClaudioDatabase {
     override suspend fun getFavoriteMedias(): MutableList<Media>
     override suspend fun setFavoriteMedias(medias: List<Media>)
     override suspend fun saveDevices(devices: List<Device>)
+    override suspend fun deleteDevice(device: Device)
+    override suspend fun deleteAllDevice()
     override suspend fun saveMedias(medias: List<Media>)
     override suspend fun saveDownloadedMedia(downloadedMedia: Media)
     override suspend fun deleteMedia(media: Media)

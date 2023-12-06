@@ -5,22 +5,11 @@ import com.niji.claudio.common.data.model.Device
 import com.niji.claudio.common.data.model.Media
 import com.niji.claudio.common.data.model.User
 import com.niji.claudio.common.data.save.IClaudioDatabase
+import com.niji.claudio.common.tool.LogUtils
 
-internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioDatabase {
+internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudioDatabase {
     private val database = ClaudioDatabaseDelight(databaseDriverFactory.createDriver())
     private val dbQuery = database.claudioDatabaseDelightQueries
-
-    override suspend fun getUser(): User {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addUser(user: User): User {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateUser(user: User) {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun getDataLogs(): List<DataLog> {
         TODO("Not yet implemented")
@@ -142,6 +131,18 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
         }
     }
 
+    override suspend fun deleteDevice(device: Device) {
+        dbQuery.transaction {
+            device.serverId?.let { dbQuery.deleteDeviceByServerId(it) }
+        }
+    }
+
+    override suspend fun deleteAllDevice() {
+        dbQuery.transaction {
+            dbQuery.deleteAllDevice()
+        }
+    }
+
     private fun mapDeviceSelecting(
         serverId: String?,
         name: String?,
@@ -152,5 +153,69 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory): IClaudioD
             name = name,
             pushToken = pushToken
         )
+    }
+
+    // ############################################################################
+    // User
+    // ############################################################################
+
+    override suspend fun getUser(): User {
+        return try {
+            dbQuery.getUser(USER_BDD_ID_DEFAULT, ::mapUserSelecting).executeAsOne()
+        } catch (npe: NullPointerException) {
+            LogUtils.d(TAG, "No user found")
+            addUser(User())
+        }
+    }
+
+    override suspend fun addUser(user: User): User {
+        upsertUser(user)
+        return getUser()
+    }
+
+    override suspend fun updateUser(user: User) {
+        upsertUser(user)
+    }
+
+    private fun upsertUser(user: User) {
+        dbQuery.transaction {
+            dbQuery.upsertUser(
+                bddId = USER_BDD_ID_DEFAULT,
+                name = user.name,
+                mPushToken = user.mPushToken,
+                mDeviceServerId = user.mDeviceServerId,
+                selectedServerIdDevice = user.selectedServerIdDevice,
+                mediaDisplayPreference = user.mediaDisplayPreference,
+                isSleepingMode = user.isSleepingMode,
+                isAdmin = user.isAdmin,
+            )
+        }
+    }
+
+    private fun mapUserSelecting(
+        bddId: Long,
+        name: String?,
+        mPushToken: String?,
+        mDeviceServerId: String?,
+        selectedServerIdDevice: String?,
+        mediaDisplayPreference: String?,
+        isSleepingMode: Boolean?,
+        isAdmin: Boolean?,
+    ): User {
+        return User(
+            bddId = bddId,
+            name = name,
+            mPushToken = mPushToken,
+            mDeviceServerId = mDeviceServerId,
+            selectedServerIdDevice = selectedServerIdDevice,
+            mediaDisplayPreference = mediaDisplayPreference,
+            isSleepingMode = isSleepingMode == true,
+            isAdmin = isAdmin == true,
+        )
+    }
+
+    companion object {
+        private const val TAG = "Database"
+        private const val USER_BDD_ID_DEFAULT = 0L
     }
 }

@@ -1,6 +1,7 @@
 -- ##########################################################################
 -- MEDIA
 -- ##########################################################################
+
 CREATE TABLE MediaDelight (
     serverId TEXT NOT NULL PRIMARY KEY,
     filePath TEXT DEFAULT NULL,
@@ -97,7 +98,47 @@ deleteDeviceByServerId:
 DELETE FROM DeviceDelight
 WHERE serverId = ?;
 
+deleteAllDevice:
+DELETE FROM DeviceDelight;
+
 -- ##########################################################################
 -- User
 -- ##########################################################################
 
+CREATE TABLE UserDelight (
+    bddId INTEGER NOT NULL PRIMARY KEY,
+    name TEXT DEFAULT NULL,
+    mPushToken TEXT DEFAULT NULL,
+    mDeviceServerId TEXT DEFAULT NULL,
+    selectedServerIdDevice TEXT DEFAULT NULL,
+    mediaDisplayPreference TEXT DEFAULT NULL,
+    isSleepingMode INTEGER AS Boolean DEFAULT NULL,
+    isAdmin INTEGER AS Boolean DEFAULT NULL
+);
+
+getUser:
+SELECT *
+FROM UserDelight
+WHERE bddId = ?;
+
+upsertUser:
+INSERT OR REPLACE INTO UserDelight(
+    bddId,
+    name,
+    mPushToken,
+    mDeviceServerId,
+    selectedServerIdDevice,
+    mediaDisplayPreference,
+    isSleepingMode,
+    isAdmin
+)
+VALUES(
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);

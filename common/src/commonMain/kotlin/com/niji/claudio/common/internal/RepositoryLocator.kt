@@ -37,7 +37,7 @@ object RepositoryLocator : IRepositoryLocator {
     override val mediaRepository: IMediaRepository = MediaRepository(claudioApi, database)
     override val deviceRepository: IDeviceRepository = DeviceRepository(claudioApi, database)
     override val userRepository: IUserRepository =
-        UserRepository(claudioApi, claudioDatabase, deviceRepository)
+        UserRepository(claudioApi, database, deviceRepository)
     override val playerRepository: IPlayerRepository = if (BuildKonfig.IS_USING_FCM) {
         PlayerRepository(playerApi, userRepository)
     } else {

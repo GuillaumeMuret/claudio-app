@@ -106,6 +106,14 @@ actual class ClaudioDatabase : IClaudioDatabase {
         }
     }
 
+    actual override suspend fun deleteDevice(device: Device) {
+        // TODO("Not yet implemented")
+    }
+
+    actual override suspend fun deleteAllDevice() {
+        // TODO("Not yet implemented")
+    }
+
     actual override suspend fun saveMedias(medias: List<Media>) {
         try {
             getMediasFile().writeText(gson.toJson(medias))

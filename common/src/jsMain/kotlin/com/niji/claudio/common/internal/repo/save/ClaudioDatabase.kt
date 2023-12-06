@@ -51,6 +51,14 @@ actual class ClaudioDatabase : IClaudioDatabase {
         mDevices = devices
     }
 
+    actual override suspend fun deleteDevice(device: Device) {
+        // TODO("Not yet implemented")
+    }
+
+    actual override suspend fun deleteAllDevice() {
+        // TODO("Not yet implemented")
+    }
+
     actual override suspend fun saveMedias(medias: List<Media>) {
         // TODO not yet implemented
         mMedias = medias

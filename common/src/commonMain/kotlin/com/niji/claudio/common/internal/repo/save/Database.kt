@@ -11,14 +11,6 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
     private val database = ClaudioDatabaseDelight(databaseDriverFactory.createDriver())
     private val dbQuery = database.claudioDatabaseDelightQueries
 
-    override suspend fun getDataLogs(): List<DataLog> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addDataLog(dataLog: DataLog) {
-        TODO("Not yet implemented")
-    }
-
     // ############################################################################
     // Medias
     // ############################################################################
@@ -211,6 +203,39 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
             mediaDisplayPreference = mediaDisplayPreference,
             isSleepingMode = isSleepingMode == true,
             isAdmin = isAdmin == true,
+        )
+    }
+
+    // ############################################################################
+    // DataLog
+    // ############################################################################
+
+    override suspend fun getDataLogs(): List<DataLog> {
+        return dbQuery.getDataLogs(::mapDataLogsSelecting).executeAsList()
+    }
+
+    override suspend fun addDataLog(dataLog: DataLog) {
+        dbQuery.transaction {
+            dbQuery.addDataLog(
+                dateStr = dataLog.dateStr,
+                action = dataLog.action,
+                isIgnored = dataLog.isIgnored,
+                data_ = dataLog.data,
+            )
+        }
+    }
+
+    private fun mapDataLogsSelecting(
+        dateStr: String,
+        action: String?,
+        isIgnored: Boolean?,
+        data: String?,
+    ): DataLog {
+        return DataLog(
+            dateStr = dateStr,
+            action = action,
+            isIgnored = isIgnored == true,
+            data = data,
         )
     }
 

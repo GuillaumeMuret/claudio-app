@@ -2,7 +2,7 @@
 -- MEDIA
 -- ##########################################################################
 
-CREATE TABLE MediaDelight (
+CREATE TABLE MediaDelight(
     serverId TEXT NOT NULL PRIMARY KEY,
     filePath TEXT DEFAULT NULL,
     filename TEXT DEFAULT NULL,
@@ -72,7 +72,7 @@ WHERE isFavorite = 1;
 -- Device
 -- ##########################################################################
 
-CREATE TABLE DeviceDelight (
+CREATE TABLE DeviceDelight(
     serverId TEXT NOT NULL PRIMARY KEY,
     name TEXT DEFAULT NULL,
     pushToken TEXT DEFAULT NULL
@@ -105,7 +105,7 @@ DELETE FROM DeviceDelight;
 -- User
 -- ##########################################################################
 
-CREATE TABLE UserDelight (
+CREATE TABLE UserDelight(
     bddId INTEGER NOT NULL PRIMARY KEY,
     name TEXT DEFAULT NULL,
     mPushToken TEXT DEFAULT NULL,
@@ -137,6 +137,35 @@ VALUES(
     ?,
     ?,
     ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+
+-- ##########################################################################
+-- DataLog
+-- ##########################################################################
+
+CREATE TABLE DataLogDelight(
+    dateStr TEXT NOT NULL,
+    action TEXT DEFAULT NULL,
+    isIgnored INTEGER AS Boolean DEFAULT NULL,
+    data TEXT DEFAULT NULL
+);
+
+getDataLogs:
+SELECT DataLogDelight.*
+FROM DataLogDelight;
+
+addDataLog:
+INSERT INTO DataLogDelight(
+    dateStr,
+    action,
+    isIgnored,
+    data
+)
+VALUES(
     ?,
     ?,
     ?,

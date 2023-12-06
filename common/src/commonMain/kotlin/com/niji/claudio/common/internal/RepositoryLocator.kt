@@ -12,6 +12,7 @@ import com.niji.claudio.common.data.feature.media.IMediaRepository
 import com.niji.claudio.common.data.feature.player.IPlayerRepository
 import com.niji.claudio.common.data.feature.user.IUserRepository
 import com.niji.claudio.common.data.save.IClaudioDatabase
+import com.niji.claudio.common.getPlatform
 import com.niji.claudio.common.internal.repo.DataLogRepository
 import com.niji.claudio.common.internal.repo.DeviceRepository
 import com.niji.claudio.common.internal.repo.HookRepository
@@ -25,15 +26,24 @@ import com.niji.claudio.common.internal.repo.api.SlackApi
 import com.niji.claudio.common.internal.repo.save.ClaudioDatabase
 import com.niji.claudio.common.internal.repo.save.Database
 import com.niji.claudio.common.internal.repo.save.DatabaseDriverFactory
+import com.niji.claudio.common.internal.repo.save.VolatileDatabase
+import com.niji.claudio.common.tool.LogUtils
+import com.niji.claudio.common.ui.state.Platform
 
 object RepositoryLocator : IRepositoryLocator {
+
+    private const val TAG = "RepositoryLocator"
 
     private val claudioApi: IClaudioApi = ClaudioApi().api
     private val playerApi: IPlayerApi = FcmApi().api
     private val hookApi: IHookApi = SlackApi().api
-    private val claudioDatabase: IClaudioDatabase = ClaudioDatabase()
-    private val database: IClaudioDatabase = Database(DatabaseDriverFactory())
-
+    private val database: IClaudioDatabase = if (getPlatform() is Platform.Web) {
+        LogUtils.d(TAG, "Init VolatileDatabase")
+        VolatileDatabase()
+    } else {
+        LogUtils.d(TAG, "Init DatabaseDriverFactory")
+        Database(DatabaseDriverFactory())
+    }
     override val mediaRepository: IMediaRepository = MediaRepository(claudioApi, database)
     override val deviceRepository: IDeviceRepository = DeviceRepository(claudioApi, database)
     override val userRepository: IUserRepository =
@@ -43,6 +53,6 @@ object RepositoryLocator : IRepositoryLocator {
     } else {
         PlayerRepositoryMqtt(userRepository)
     }
-    override val dataLogRepository: IDataLogRepository = DataLogRepository(claudioDatabase)
+    override val dataLogRepository: IDataLogRepository = DataLogRepository(database)
     override val hookRepository: IHookRepository = HookRepository(hookApi)
 }

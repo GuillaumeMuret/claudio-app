@@ -34,16 +34,6 @@ actual object FileUtils {
         return destinationFile.path
     }
 
-    actual fun getRootDirPath(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .toString() + "/${DIR_NAME_ROOT}"
-        } else {
-            ClaudioApplication.applicationContext()
-                .getDir(DIR_NAME_ROOT, Context.MODE_PRIVATE).path
-        }
-    }
-
     actual fun getMediasDirectoryPath(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

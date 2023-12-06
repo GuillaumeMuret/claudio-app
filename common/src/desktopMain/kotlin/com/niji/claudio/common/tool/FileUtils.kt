@@ -33,7 +33,5 @@ actual object FileUtils {
         return destinationFile.path
     }
 
-    actual fun getRootDirPath(): String = File("./${DIR_NAME_ROOT}").path
-
     actual fun getMediasDirectoryPath(): String = File("./${DIR_NAME_ROOT}/${DIR_NAME_MEDIAS}").path
 }

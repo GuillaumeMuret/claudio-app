@@ -5,7 +5,6 @@ import com.niji.claudio.common.data.api.IClaudioApi
 import com.niji.claudio.common.data.model.Device
 import com.niji.claudio.common.data.model.DownloadProgress
 import com.niji.claudio.common.data.model.Media
-import com.niji.claudio.common.internal.repo.save.ClaudioDatabase
 import com.niji.claudio.common.tool.FileUtils
 import com.niji.claudio.common.tool.LogUtils
 import com.niji.claudio.common.tool.MediaUtils
@@ -31,23 +30,28 @@ class ClaudioApi : AbstractKtorClient(), IClaudioApi {
 
     val api = this
 
-    override suspend fun getDevices(): List<Device> = httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/devices").body()
+    override suspend fun getDevices(): List<Device> =
+        httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/devices").body()
 
-    override suspend fun postDevice(device: Device): Device = httpClient.post("${BuildKonfig.CLAUDIO_BASE_URL}/devices") {
-        header("Content-Type", "application/json")
-        setBody(Device(name = device.name, pushToken = device.pushToken))
-    }.body()
+    override suspend fun postDevice(device: Device): Device =
+        httpClient.post("${BuildKonfig.CLAUDIO_BASE_URL}/devices") {
+            header("Content-Type", "application/json")
+            setBody(Device(name = device.name, pushToken = device.pushToken))
+        }.body()
 
     override suspend fun deleteDevice(device: Device): Device =
         httpClient.delete("${BuildKonfig.CLAUDIO_BASE_URL}/devices") {
             url { device.serverId?.let { parameters.append("id", it) } }
         }.body()
 
-    override suspend fun getMedias(): List<Media> = httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/medias").body()
-    override suspend fun getMedia(id: String?): Media = httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/media") {
-        headers { append("x_claudio_auth_token", BuildKonfig.CLAUDIO_AUTH_TOKEN) }
-        url { if (id != null) parameters.append("id", id) }
-    }.body()
+    override suspend fun getMedias(): List<Media> =
+        httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/medias").body()
+
+    override suspend fun getMedia(id: String?): Media =
+        httpClient.get("${BuildKonfig.CLAUDIO_BASE_URL}/media") {
+            headers { append("x_claudio_auth_token", BuildKonfig.CLAUDIO_AUTH_TOKEN) }
+            url { if (id != null) parameters.append("id", id) }
+        }.body()
 
     override suspend fun deleteMedia(id: String?): List<Media> =
         httpClient.delete("${BuildKonfig.CLAUDIO_BASE_URL}/media") {
@@ -55,8 +59,7 @@ class ClaudioApi : AbstractKtorClient(), IClaudioApi {
         }.body()
 
     override suspend fun downloadMedia(urlStr: String, media: Media): Media {
-        // TODO do not access claudioDatabase directly like this
-        val filePath = ClaudioDatabase().getMediasDirectoryPath() + "/${media.filename}"
+        val filePath = FileUtils.getMediasDirectoryPath() + "/${media.filename}"
         val file = FileUtils.createMediaFile(filePath)
         media.filePath = filePath
         httpClient.prepareGet(urlStr).execute { httpResponse ->

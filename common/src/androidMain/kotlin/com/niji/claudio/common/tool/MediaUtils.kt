@@ -2,14 +2,8 @@ package com.niji.claudio.common.tool
 
 import android.net.Uri
 import com.niji.claudio.common.ClaudioApplication
-import com.niji.claudio.common.data.model.DownloadProgress
 import com.niji.claudio.common.data.model.Media
-import com.niji.claudio.common.internal.repo.save.ClaudioDatabase
-import kotlinx.coroutines.withContext
-import java.io.BufferedInputStream
 import java.io.File
-import java.io.FileOutputStream
-import java.net.URI
 
 
 actual object MediaUtils {

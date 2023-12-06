@@ -23,7 +23,6 @@ import com.niji.claudio.common.internal.repo.UserRepository
 import com.niji.claudio.common.internal.repo.api.ClaudioApi
 import com.niji.claudio.common.internal.repo.api.FcmApi
 import com.niji.claudio.common.internal.repo.api.SlackApi
-import com.niji.claudio.common.internal.repo.save.ClaudioDatabase
 import com.niji.claudio.common.internal.repo.save.Database
 import com.niji.claudio.common.internal.repo.save.DatabaseDriverFactory
 import com.niji.claudio.common.internal.repo.save.VolatileDatabase

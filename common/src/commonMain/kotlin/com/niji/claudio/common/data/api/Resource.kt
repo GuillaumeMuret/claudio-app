@@ -1,7 +1,7 @@
 package com.niji.claudio.common.data.api
 
 sealed class Resource<out T> {
-    object Loading : Resource<Nothing>()
+    data object Loading : Resource<Nothing>()
     class Success<out T>(
         val data: T?,
         val source: DataSource = DataSource.NETWORK,

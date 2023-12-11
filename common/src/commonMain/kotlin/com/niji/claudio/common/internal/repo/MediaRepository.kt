@@ -27,37 +27,30 @@ class MediaRepository(
         if (mustReload) {
             val responseResource = sendGeneric(api::getMedias)
             if (responseResource is Resource.Success) {
-                responseResource.data?.let {
-                    database.saveMedias(it)
-                    getMediasCache = it.toMutableList()
+                responseResource.data?.let { serverMedias ->
+                    // Manage downloaded and favorite medias
+                    val downloadedMedias = database.getDownloadedMedias()
+                    val favoriteMedias = database.getFavoriteMedias()
+                    downloadedMedias.forEach { downloadedMedia ->
+                        serverMedias.find { it.serverId == downloadedMedia.serverId }?.apply {
+                            isDownloaded = true
+                            isDownloadedState = true
+                            filePath = downloadedMedia.filePath
+                        }
+                    }
+                    favoriteMedias.forEach { favoriteMedia ->
+                        serverMedias.find { it.serverId == favoriteMedia.serverId }?.apply {
+                            isFavorite = true
+                            isFavoriteState = true
+                        }
+                    }
+                    // Save in database
+                    database.saveMedias(serverMedias)
                     mustReload = false
                 }
             }
         }
-        if (getMediasCache == null) {
-            getMediasCache = database.getMedias().toMutableList()
-        }
-        // Manage downloaded and favorite medias
-        val downloadedMedias = database.getDownloadedMedias()
-        val favoriteMedias = database.getFavoriteMedias()
-        getMediasCache?.let { safeMediasCache ->
-            downloadedMedias.forEach { downloadedMediaItem ->
-                safeMediasCache.find { it.serverId == downloadedMediaItem.serverId }?.let { foundedMedia ->
-                    safeMediasCache[safeMediasCache.indexOf(foundedMedia)] = foundedMedia.apply {
-                        isDownloaded = true
-                        isDownloadedState = true
-                        filePath = downloadedMediaItem.filePath
-                    }
-                }
-            }
-            safeMediasCache.forEach { mediaItem ->
-                safeMediasCache[safeMediasCache.indexOf(mediaItem)].apply {
-                    val isFavoriteValue = favoriteMedias.find { it.serverId == mediaItem.serverId } != null
-                    isFavorite = isFavoriteValue
-                    isFavoriteState = isFavoriteValue
-                }
-            }
-        }
+        getMediasCache = database.getMedias().toMutableList()
         return filterMedia(query, isFavoriteMode)
     }
 
@@ -102,10 +95,11 @@ class MediaRepository(
         return getMedia(media.serverId)?.url?.let {
             val downloadedMedia = api.downloadMedia(it, media)
             database.saveDownloadedMedia(
-                Media(
-                    serverId = downloadedMedia.serverId,
+                media.apply {
+                    isDownloaded = true
+                    isDownloadedState = true
                     filePath = downloadedMedia.filePath
-                )
+                }
             )
             downloadedMedia
         }
@@ -138,16 +132,7 @@ class MediaRepository(
     }
 
     override suspend fun setFavoriteMediaUseCase(media: Media) {
-        val favoriteMedias = database.getFavoriteMedias().toMutableList()
-        if (favoriteMedias.find { it.serverId == media.serverId } == null) {
-            favoriteMedias.add(Media(serverId = media.serverId))
-            media.isFavorite = true
-        } else {
-            val favoriteMedia = favoriteMedias.find { it.serverId == media.serverId }
-            favoriteMedia?.let { favoriteMedias.remove(it) }
-            media.isFavorite = false
-        }
-        database.setFavoriteMedias(favoriteMedias)
+        database.setFavoriteMedias(listOf(media.apply { isFavorite = isFavorite == false }))
     }
 
     companion object {

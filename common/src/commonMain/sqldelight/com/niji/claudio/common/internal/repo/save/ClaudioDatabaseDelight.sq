@@ -1,0 +1,173 @@
+-- ##########################################################################
+-- MEDIA
+-- ##########################################################################
+
+CREATE TABLE MediaDelight(
+    serverId TEXT NOT NULL PRIMARY KEY,
+    filePath TEXT DEFAULT NULL,
+    filename TEXT DEFAULT NULL,
+    durationSec TEXT DEFAULT NULL, -- FLOAT
+    url TEXT DEFAULT NULL,
+    title TEXT DEFAULT NULL,
+    category TEXT DEFAULT NULL,
+    isDownloaded INTEGER AS Boolean DEFAULT NULL,
+    playCount INTEGER DEFAULT NULL,
+    size INTEGER DEFAULT NULL,
+    fromTitle TEXT DEFAULT NULL,
+    isFavorite INTEGER AS Boolean DEFAULT NULL,
+    createdAt TEXT DEFAULT NULL
+);
+
+saveMedia:
+INSERT OR REPLACE INTO MediaDelight(
+    serverId,
+    filePath,
+    filename,
+    durationSec,
+    url,
+    title,
+    category,
+    isDownloaded,
+    playCount,
+    size,
+    fromTitle,
+    isFavorite,
+    createdAt
+)
+VALUES(
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+
+deleteMediaByServerId:
+DELETE FROM MediaDelight
+WHERE serverId = ?;
+
+getMedias:
+SELECT MediaDelight.*
+FROM MediaDelight;
+
+getDownloadedMedias:
+SELECT *
+FROM MediaDelight
+WHERE isDownloaded = 1;
+
+getFavoriteMedias:
+SELECT *
+FROM MediaDelight
+WHERE isFavorite = 1;
+
+-- ##########################################################################
+-- Device
+-- ##########################################################################
+
+CREATE TABLE DeviceDelight(
+    serverId TEXT NOT NULL PRIMARY KEY,
+    name TEXT DEFAULT NULL,
+    pushToken TEXT DEFAULT NULL
+);
+
+getDevices:
+SELECT DeviceDelight.*
+FROM DeviceDelight;
+
+addDevice:
+INSERT OR REPLACE INTO DeviceDelight(
+    serverId,
+    name,
+    pushToken
+)
+VALUES(
+    ?,
+    ?,
+    ?
+);
+
+deleteDeviceByServerId:
+DELETE FROM DeviceDelight
+WHERE serverId = ?;
+
+deleteAllDevice:
+DELETE FROM DeviceDelight;
+
+-- ##########################################################################
+-- User
+-- ##########################################################################
+
+CREATE TABLE UserDelight(
+    bddId INTEGER NOT NULL PRIMARY KEY,
+    name TEXT DEFAULT NULL,
+    mPushToken TEXT DEFAULT NULL,
+    mDeviceServerId TEXT DEFAULT NULL,
+    selectedServerIdDevice TEXT DEFAULT NULL,
+    mediaDisplayPreference TEXT DEFAULT NULL,
+    isSleepingMode INTEGER AS Boolean DEFAULT NULL,
+    isAdmin INTEGER AS Boolean DEFAULT NULL
+);
+
+getUser:
+SELECT *
+FROM UserDelight
+WHERE bddId = ?;
+
+upsertUser:
+INSERT OR REPLACE INTO UserDelight(
+    bddId,
+    name,
+    mPushToken,
+    mDeviceServerId,
+    selectedServerIdDevice,
+    mediaDisplayPreference,
+    isSleepingMode,
+    isAdmin
+)
+VALUES(
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+
+-- ##########################################################################
+-- DataLog
+-- ##########################################################################
+
+CREATE TABLE DataLogDelight(
+    dateStr TEXT NOT NULL,
+    action TEXT DEFAULT NULL,
+    isIgnored INTEGER AS Boolean DEFAULT NULL,
+    data TEXT DEFAULT NULL
+);
+
+getDataLogs:
+SELECT DataLogDelight.*
+FROM DataLogDelight;
+
+addDataLog:
+INSERT INTO DataLogDelight(
+    dateStr,
+    action,
+    isIgnored,
+    data
+)
+VALUES(
+    ?,
+    ?,
+    ?,
+    ?
+);

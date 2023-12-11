@@ -15,5 +15,5 @@ interface IUserRepository : IAbstractRepository {
     suspend fun setSleepingMode(isSleeping: Boolean)
     suspend fun setUserToken(token: String)
     suspend fun syncUserDeviceIfPossible(mustUpdateDevice: Boolean = false)
-    suspend fun setBtnClick(btn: String): Boolean
+    suspend fun setToggleAdminBtnClick(btn: String): Boolean
 }

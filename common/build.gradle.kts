@@ -14,6 +14,7 @@ plugins {
     id("com.android.library")
     id("com.codingfeline.buildkonfig")
     id("com.github.ben-manes.versions")
+    id(Libs.sqlDelightPlugin)
 }
 
 val properties = getMyProperties()
@@ -29,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "shared"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -71,6 +73,8 @@ kotlin {
                 /* TODO use it when the Apple targets will be available through JitPack
                 implementation(Libs.mqtt)
                 implementation(Libs.mqttClient) */
+
+                implementation(Libs.sqlDelightRuntime)
             }
         }
         val jvm by creating {
@@ -86,13 +90,16 @@ kotlin {
                 implementation(Libs.ktorClientAndroid)
                 implementation(Libs.media3ExoPlayer)
                 implementation(Libs.media3Ui)
+                implementation(Libs.sqlDelightAndroidDriver)
             }
         }
         val desktopMain by getting {
             dependsOn(jvm)
             dependencies {
                 implementation(compose.desktop.common)
+                implementation(compose.desktop.currentOs)
                 implementation(Libs.ktorClientJava)
+                implementation(Libs.sqlDelightSqliteDriver)
             }
         }
         val iosMain by creating {
@@ -100,6 +107,7 @@ kotlin {
             dependencies {
                 implementation(Libs.ktorClientIos)
                 implementation(Libs.gson)
+                implementation(Libs.sqlDelightNativeDriver)
             }
         }
         val iosX64Main by getting {
@@ -115,6 +123,7 @@ kotlin {
             dependencies {
                 implementation(compose.html.core)
                 implementation(compose.runtime)
+                implementation(Libs.sqlDelightJsDriver)
             }
         }
     }
@@ -200,6 +209,13 @@ buildkonfig {
             properties.getProperty("IS_USING_FCM") ?: "true"
         )
     }
+}
+
+sqldelight {
+    database("ClaudioDatabaseDelight") {
+        packageName = "com.niji.claudio.common.internal.repo.save"
+    }
+    linkSqlite = true
 }
 
 fun getMyProperties(propertyFileName: String = "local"): Properties {

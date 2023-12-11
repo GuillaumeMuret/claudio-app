@@ -14,7 +14,7 @@ plugins {
     id("com.android.library")
     id("com.codingfeline.buildkonfig")
     id("com.github.ben-manes.versions")
-    id("com.squareup.sqldelight")
+    id(Libs.sqlDelightPlugin)
 }
 
 val properties = getMyProperties()
@@ -74,7 +74,7 @@ kotlin {
                 implementation(Libs.mqtt)
                 implementation(Libs.mqttClient) */
 
-                implementation("com.squareup.sqldelight:runtime:${Versions.sqlDelightVersion}")
+                implementation(Libs.sqlDelightRuntime)
             }
         }
         val jvm by creating {
@@ -90,7 +90,7 @@ kotlin {
                 implementation(Libs.ktorClientAndroid)
                 implementation(Libs.media3ExoPlayer)
                 implementation(Libs.media3Ui)
-                implementation("com.squareup.sqldelight:android-driver:${Versions.sqlDelightVersion}")
+                implementation(Libs.sqlDelightAndroidDriver)
             }
         }
         val desktopMain by getting {
@@ -99,7 +99,7 @@ kotlin {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
                 implementation(Libs.ktorClientJava)
-                implementation("com.squareup.sqldelight:sqlite-driver:${Versions.sqlDelightVersion}")
+                implementation(Libs.sqlDelightSqliteDriver)
             }
         }
         val iosMain by creating {
@@ -107,7 +107,7 @@ kotlin {
             dependencies {
                 implementation(Libs.ktorClientIos)
                 implementation(Libs.gson)
-                implementation("com.squareup.sqldelight:native-driver:${Versions.sqlDelightVersion}")
+                implementation(Libs.sqlDelightNativeDriver)
             }
         }
         val iosX64Main by getting {
@@ -123,7 +123,7 @@ kotlin {
             dependencies {
                 implementation(compose.html.core)
                 implementation(compose.runtime)
-                implementation("com.squareup.sqldelight:sqljs-driver:${Versions.sqlDelightVersion}")
+                implementation(Libs.sqlDelightJsDriver)
             }
         }
     }

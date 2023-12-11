@@ -9,5 +9,6 @@ object Versions {
     const val googleServices = "4.3.14"
     const val media3 = "1.1.1"
     const val mqtt = "0.4.1"
-    const val sqlDelightVersion = "1.5.5"
+    const val sqlDelight = "1.5.5"
+    const val benManes = "0.38.0"
 }

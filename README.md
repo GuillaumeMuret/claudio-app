@@ -149,7 +149,6 @@ From the script you can change request body to play with message / language / pi
 
 # TODO List
 
-- Use [SQLDelight](https://github.com/cashapp/sqldelight) for database
 - Use FCM service on iOS
 - Use a common video player (check this 
 [article](https://medium.com/proandroiddev/unifying-video-players-compose-multiplatform-for-ios-android-desktop-aa920d29bbf3)

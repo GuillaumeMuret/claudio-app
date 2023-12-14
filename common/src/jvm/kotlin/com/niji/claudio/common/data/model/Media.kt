@@ -31,8 +31,10 @@ actual data class Media actual constructor(
 ) {
     @delegate:Transient
     actual var isDownloadedState by mutableStateOf(isDownloaded)
+
     @delegate:Transient
     actual var isFavoriteState by mutableStateOf(isFavorite)
+
     @delegate:Transient
     actual var downloadProgressState: DownloadProgress? by mutableStateOf(null)
 }

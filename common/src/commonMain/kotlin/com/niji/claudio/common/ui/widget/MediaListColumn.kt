@@ -119,7 +119,8 @@ fun MediaListColumn(mVm: MediasViewModel) {
                                                         fontSize = 14.6.sp
                                                     )
                                                 }
-                                                if ((downloadProgressState?.progress ?: 0) < (downloadProgressState?.max
+                                                if ((downloadProgressState?.progress
+                                                        ?: 0) < (downloadProgressState?.max
                                                         ?: 0)
                                                 ) {
                                                     downloadProgressState?.let { state ->
@@ -147,17 +148,21 @@ fun MediaListColumn(mVm: MediasViewModel) {
                                                     imageVector = Icons.Default.Delete,
                                                     contentDescription = "Delete",
                                                     tint = MaterialTheme.colors.red,
-                                                    modifier = Modifier.width(30.dp).height(itemSize.dp)
+                                                    modifier = Modifier.width(30.dp)
+                                                        .height(itemSize.dp)
                                                 )
                                             }
                                         } else {
                                             if (isDownloadedState != true) {
                                                 IconButton(onClick = { mVm.downloadMedia(it) }) {
                                                     Icon(
-                                                        painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_DOWNLOAD),
+                                                        painter = ClaudioPainterResource.get(
+                                                            ClaudioPainterResourceId.IC_DOWNLOAD
+                                                        ),
                                                         contentDescription = "Download",
                                                         tint = MaterialTheme.colors.red,
-                                                        modifier = Modifier.width(30.dp).height(itemSize.dp)
+                                                        modifier = Modifier.width(30.dp)
+                                                            .height(itemSize.dp)
                                                     )
                                                 }
                                             }

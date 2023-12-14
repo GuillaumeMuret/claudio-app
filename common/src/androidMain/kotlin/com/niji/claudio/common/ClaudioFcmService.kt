@@ -29,7 +29,11 @@ class ClaudioFcmService : FirebaseMessagingService() {
                     FcmUtils.createNotification(remoteMessage.data)
                 } else {
                     remoteMessage.data[FCM_DATA_KEY_TTS]?.let { PlayerUtils.playTts(it) }
-                    remoteMessage.data[FCM_DATA_KEY_MEDIA_PLAY]?.let { PlayerUtils.displayPlayerIfPossible(it) }
+                    remoteMessage.data[FCM_DATA_KEY_MEDIA_PLAY]?.let {
+                        PlayerUtils.displayPlayerIfPossible(
+                            it
+                        )
+                    }
                     remoteMessage.data[FCM_DATA_KEY_VOLUME_RAISE]?.let { DeviceUtils.raiseVolume() }
                     remoteMessage.data[FCM_DATA_KEY_VOLUME_LOWER]?.let { DeviceUtils.lowerVolume() }
                     remoteMessage.data[FCM_DATA_KEY_VOLUME_MAX]?.let { DeviceUtils.maxVolume() }
@@ -54,7 +58,11 @@ class ClaudioFcmService : FirebaseMessagingService() {
         LogUtils.d(TAG, "sendRegistrationTokenToServer($token)")
         CoroutineScope(Dispatchers.IO).launch {
             token?.let { pushToken ->
-                UserPreferencesUtils.put(applicationContext, UserPreferencesUtils.DEVICE_PUSH_TOKEN_PREF, token)
+                UserPreferencesUtils.put(
+                    applicationContext,
+                    UserPreferencesUtils.DEVICE_PUSH_TOKEN_PREF,
+                    token
+                )
                 TokenReceivedUseCase(pushToken).execute()
                 try {
                     val response = HookTokenUseCase(

@@ -15,9 +15,8 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
     // Medias
     // ############################################################################
 
-    override suspend fun getMedias(): List<Media> {
-        return dbQuery.getMedias(::mapMediaSelecting).executeAsList()
-    }
+    override suspend fun getMedias() =
+        dbQuery.transactionWithResult { dbQuery.getMedias(::mapMediaSelecting).executeAsList() }
 
     override suspend fun saveMedias(medias: List<Media>) {
         dbQuery.transaction {
@@ -61,12 +60,12 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
         }
     }
 
-    override suspend fun getDownloadedMedias(): List<Media> {
-        return dbQuery.getDownloadedMedias(::mapMediaSelecting).executeAsList()
+    override suspend fun getDownloadedMedias() = dbQuery.transactionWithResult {
+        dbQuery.getDownloadedMedias(::mapMediaSelecting).executeAsList()
     }
 
-    override suspend fun getFavoriteMedias(): List<Media> {
-        return dbQuery.getFavoriteMedias(::mapMediaSelecting).executeAsList()
+    override suspend fun getFavoriteMedias() = dbQuery.transactionWithResult {
+        dbQuery.getFavoriteMedias(::mapMediaSelecting).executeAsList()
     }
 
     private fun mapMediaSelecting(
@@ -101,12 +100,12 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
         )
     }
 
-    // ############################################################################
-    // Devices
-    // ############################################################################
+// ############################################################################
+// Devices
+// ############################################################################
 
-    override suspend fun getDevices(): List<Device> {
-        return dbQuery.getDevices(::mapDeviceSelecting).executeAsList()
+    override suspend fun getDevices() = dbQuery.transactionWithResult {
+        dbQuery.getDevices(::mapDeviceSelecting).executeAsList()
     }
 
     override suspend fun saveDevices(devices: List<Device>) {
@@ -147,13 +146,15 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
         )
     }
 
-    // ############################################################################
-    // User
-    // ############################################################################
+// ############################################################################
+// User
+// ############################################################################
 
     override suspend fun getUser(): User {
         return try {
-            dbQuery.getUser(USER_BDD_ID_DEFAULT, ::mapUserSelecting).executeAsOne()
+            dbQuery.transactionWithResult {
+                dbQuery.getUser(USER_BDD_ID_DEFAULT, ::mapUserSelecting).executeAsOne()
+            }
         } catch (npe: NullPointerException) {
             LogUtils.d(TAG, "No user found")
             addUser(User())
@@ -206,12 +207,12 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) : IClaudio
         )
     }
 
-    // ############################################################################
-    // DataLog
-    // ############################################################################
+// ############################################################################
+// DataLog
+// ############################################################################
 
-    override suspend fun getDataLogs(): List<DataLog> {
-        return dbQuery.getDataLogs(::mapDataLogsSelecting).executeAsList()
+    override suspend fun getDataLogs(): List<DataLog> = dbQuery.transactionWithResult {
+        dbQuery.getDataLogs(::mapDataLogsSelecting).executeAsList()
     }
 
     override suspend fun addDataLog(dataLog: DataLog) {

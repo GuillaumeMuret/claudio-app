@@ -215,7 +215,6 @@ sqldelight {
     database("ClaudioDatabaseDelight") {
         packageName = "com.niji.claudio.common.internal.repo.save"
     }
-    linkSqlite = true
 }
 
 fun getMyProperties(propertyFileName: String = "local"): Properties {

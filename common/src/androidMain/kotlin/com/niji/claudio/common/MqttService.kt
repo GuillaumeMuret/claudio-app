@@ -63,13 +63,14 @@ class MqttService : Service() {
             snoozeIntent,
             PendingIntent.FLAG_IMMUTABLE
         )
-        val builder = NotificationCompat.Builder(ClaudioApplication.applicationContext(), CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_poop)
-            .setContentTitle("Claudio \uD83D\uDCA9")
-            .setContentText("Service running \uD83C\uDF89")
-            .addAction(
-                R.drawable.ic_launcher_foreground, "Quit application", snoozePendingIntent
-            ).setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        val builder =
+            NotificationCompat.Builder(ClaudioApplication.applicationContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_poop)
+                .setContentTitle("Claudio \uD83D\uDCA9")
+                .setContentText("Service running \uD83C\uDF89")
+                .addAction(
+                    R.drawable.ic_launcher_foreground, "Quit application", snoozePendingIntent
+                ).setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         return builder.build()
     }

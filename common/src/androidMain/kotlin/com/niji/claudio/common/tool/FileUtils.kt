@@ -39,7 +39,8 @@ actual object FileUtils {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .toString() + "/${DIR_NAME_ROOT}/${DIR_NAME_MEDIAS}"
         } else {
-            ClaudioApplication.applicationContext().getDir(DIR_NAME_MEDIAS, Context.MODE_PRIVATE).path
+            ClaudioApplication.applicationContext()
+                .getDir(DIR_NAME_MEDIAS, Context.MODE_PRIVATE).path
         }
     }
 }

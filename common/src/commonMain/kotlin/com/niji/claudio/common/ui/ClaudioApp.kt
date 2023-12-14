@@ -23,7 +23,11 @@ import com.niji.claudio.common.ui.widget.MediasScreen
 
 
 @Composable
-fun ClaudioApp(mVm: MediasViewModel, window: Any? = null, launchFileChooserIntent: (() -> Unit)? = null) {
+fun ClaudioApp(
+    mVm: MediasViewModel,
+    window: Any? = null,
+    launchFileChooserIntent: (() -> Unit)? = null
+) {
     val showDeviceDialogState: Boolean by mVm.showDeviceDialogState.collectAsState()
     val showOverAppDialogState: Boolean by mVm.showOverAppDialogState.collectAsState()
     val showErrorDialogState: Boolean by mVm.showErrorDialogState.collectAsState()

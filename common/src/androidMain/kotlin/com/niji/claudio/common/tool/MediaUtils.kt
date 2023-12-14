@@ -10,7 +10,7 @@ actual object MediaUtils {
 
     actual fun getFileByteArray(media: Media): ByteArray? {
         return if (media.filePath?.startsWith("/") == false) {
-             ClaudioApplication.applicationContext().contentResolver.openInputStream(
+            ClaudioApplication.applicationContext().contentResolver.openInputStream(
                 Uri.parse(
                     media.filePath
                 )

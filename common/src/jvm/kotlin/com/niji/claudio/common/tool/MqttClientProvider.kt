@@ -2,15 +2,9 @@ package com.niji.claudio.common.tool
 
 // TODO MQTT LIB ISSUE -> import MQTTClient
 // TODO MQTT LIB ISSUE -> import TLSClientSettings
-import com.niji.claudio.BuildKonfig
-import com.niji.claudio.common.data.feature.user.usecase.GetUserUseCase
 import com.niji.claudio.common.data.model.ClaudioData
 import com.niji.claudio.common.data.model.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+
 // TODO MQTT LIB ISSUE -> import mqtt.Subscription
 // TODO MQTT LIB ISSUE -> import mqtt.packets.Qos
 // TODO MQTT LIB ISSUE -> import mqtt.packets.mqttv5.SubscriptionOptions

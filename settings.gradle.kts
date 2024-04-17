@@ -1,3 +1,7 @@
+rootProject.name = "Claudio"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()
@@ -21,8 +25,6 @@ pluginManagement {
         id("org.jetbrains.compose").version(composeVersion)
     }
 }
-
-rootProject.name = "Claudio"
 
 include(":common")
 include(":appAndroid")

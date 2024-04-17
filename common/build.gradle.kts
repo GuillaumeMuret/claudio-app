@@ -4,11 +4,10 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.io.FileInputStream
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Properties
 
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
@@ -33,23 +32,10 @@ kotlin {
             linkerOpts.add("-lsqlite3")
         }
     }
-
     js(IR) {
         browser()
         nodejs()
         binaries.executable()
-    }
-
-    cocoapods {
-        version = "1.0.0"
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
-        framework {
-            baseName = "shared"
-            isStatic = true
-        }
     }
 
     sourceSets {
@@ -196,7 +182,7 @@ buildkonfig {
         buildConfigField(
             STRING,
             "CLAUDIO_BASE_URL",
-            properties.getProperty("CLAUDIO_BASE_URL") ?: "https://claudio.io"
+            properties.getProperty("CLAUDIO_BASE_URL") ?: "https://my-claudio-base-url.io"
         )
         buildConfigField(
             STRING,
@@ -231,7 +217,9 @@ fun getMyProperties(propertyFileName: String = "local"): Properties {
         File(project.projectDir.absolutePath + "/src/commonMain/resources/raw/tls.crt")
     if (!mqttTlsCertificate.exists()) {
         mqttTlsCertificate.createNewFile()
-        mqttTlsCertificate.appendText(properties.getProperty("MQTT_TLS_CERTIFICATE") ?: "MQTT_TLS_CERTIFICATE")
+        mqttTlsCertificate.appendText(
+            properties.getProperty("MQTT_TLS_CERTIFICATE") ?: "MQTT_TLS_CERTIFICATE"
+        )
     }
     return properties
 }

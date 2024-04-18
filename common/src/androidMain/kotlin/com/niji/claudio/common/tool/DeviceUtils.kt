@@ -13,11 +13,12 @@ actual object DeviceUtils {
     private const val VIBRATION_TIME_MS = 500L
     private const val AUDIO_MANAGER_FLAGS = AudioManager.FLAG_PLAY_SOUND
 
+    @Suppress("DEPRECATION")
     actual fun vibrate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = ClaudioApplication.applicationContext()
                 .getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager?
-            val vibrator = vibratorManager?.defaultVibrator;
+            val vibrator = vibratorManager?.defaultVibrator
             vibrator?.vibrate(
                 VibrationEffect.createOneShot(
                     VIBRATION_TIME_MS,

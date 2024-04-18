@@ -75,7 +75,7 @@ Ask a developer to get the file 😊
 
 There is an issue with the resources embedded on the app.
 
-To add the resources, use this workaround gradle task : `./gradlew :appJs:copyJsResourcesWorkaround`
+To add the resources we use a gradle task named copyJsResourcesWorkaround.
 
 # Tools
 

@@ -15,10 +15,15 @@ allprojects {
         mavenCentral()
         maven(ProjectVersions.MAVEN_JETBRAINS_COMPOSE)
         maven(ProjectVersions.MAVEN_JITPACK)
-        // Deprecated but useful for mqtt libraries
-        jcenter()
-        // Use maven local for MQTT
-        mavenLocal()
+        // TODO MQTT LIB ISSUE -> Deprecated but useful for mqtt libraries
+        // TODO MQTT LIB ISSUE -> jcenter()
+        // TODO MQTT LIB ISSUE -> Use maven local for MQTT
+        // TODO MQTT LIB ISSUE -> mavenLocal()
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+        kotlinOptions {
+            freeCompilerArgs += "-Xexpect-actual-classes"
+        }
     }
 }
 

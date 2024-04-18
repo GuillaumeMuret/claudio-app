@@ -5,6 +5,8 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.util.Properties
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 plugins {
     kotlin("multiplatform")
@@ -222,4 +224,35 @@ fun getMyProperties(propertyFileName: String = "local"): Properties {
         )
     }
     return properties
+}
+
+// Workaround for first use :
+
+tasks.register("checkFiles") {
+    doLast {
+        checkFilesArchitecture()
+    }
+}
+
+// Task to remove when workaround fixed
+tasks.register("copyJsResourcesWorkaround", Copy::class.java) {
+    from(project(":common").file("src/commonMain/resources"))
+    into(project(":appJs").file("build/processedResources/js/main"))
+}
+
+tasks.getByName("preBuild").dependsOn("checkFiles")
+tasks.getByName("preBuild").dependsOn("copyJsResourcesWorkaround")
+
+fun checkFilesArchitecture() {
+    val googleServices =
+        File(project.projectDir.absolutePath + "/../appAndroid/google-services.json")
+    if (!googleServices.exists()) {
+        val fakeGoogleServices =
+            File(project.projectDir.absolutePath + "/../appAndroid/fake-google-services.json")
+        Files.copy(
+            fakeGoogleServices.toPath(),
+            googleServices.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        )
+    }
 }

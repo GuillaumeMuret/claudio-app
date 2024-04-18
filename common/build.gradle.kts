@@ -4,9 +4,9 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.io.FileInputStream
 import java.io.InputStreamReader
-import java.util.Properties
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import java.util.Properties
 
 plugins {
     kotlin("multiplatform")
@@ -41,6 +41,14 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings {
+                @Suppress("OPT_IN_USAGE")
+                compilerOptions {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                }
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(compose.ui)
@@ -226,13 +234,14 @@ fun getMyProperties(propertyFileName: String = "local"): Properties {
     return properties
 }
 
-// Workaround for first use :
-
-tasks.register("checkFiles") {
+// Workaround for first usage
+tasks.register("checkGoogleServices") {
     doLast {
-        checkFilesArchitecture()
+        checkGoogleServices()
     }
 }
+
+tasks.getByName("preBuild").dependsOn("checkGoogleServices")
 
 // Task to remove when workaround fixed
 tasks.register("copyJsResourcesWorkaround", Copy::class.java) {
@@ -240,10 +249,9 @@ tasks.register("copyJsResourcesWorkaround", Copy::class.java) {
     into(project(":appJs").file("build/processedResources/js/main"))
 }
 
-tasks.getByName("preBuild").dependsOn("checkFiles")
-tasks.getByName("preBuild").dependsOn("copyJsResourcesWorkaround")
+tasks.getByName("jsJar").dependsOn("copyJsResourcesWorkaround")
 
-fun checkFilesArchitecture() {
+fun checkGoogleServices() {
     val googleServices =
         File(project.projectDir.absolutePath + "/../appAndroid/google-services.json")
     if (!googleServices.exists()) {

@@ -20,11 +20,6 @@ allprojects {
         // TODO MQTT LIB ISSUE -> Use maven local for MQTT
         // TODO MQTT LIB ISSUE -> mavenLocal()
     }
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
-        kotlinOptions {
-            freeCompilerArgs += "-Xexpect-actual-classes"
-        }
-    }
 }
 
 buildscript {

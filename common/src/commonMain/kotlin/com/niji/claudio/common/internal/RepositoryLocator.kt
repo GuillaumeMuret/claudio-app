@@ -21,6 +21,7 @@ import com.niji.claudio.common.internal.repo.PlayerRepository
 import com.niji.claudio.common.internal.repo.PlayerRepositoryMqtt
 import com.niji.claudio.common.internal.repo.UserRepository
 import com.niji.claudio.common.internal.repo.api.ClaudioApi
+import com.niji.claudio.common.internal.repo.api.FakeClaudioApi
 import com.niji.claudio.common.internal.repo.api.FcmApi
 import com.niji.claudio.common.internal.repo.api.SlackApi
 import com.niji.claudio.common.internal.repo.save.Database
@@ -32,8 +33,13 @@ import com.niji.claudio.common.ui.state.Platform
 object RepositoryLocator : IRepositoryLocator {
 
     private const val TAG = "RepositoryLocator"
+    private const val FAKE_CLAUDIO_URL = "https://my-claudio-base-url.io"
 
-    private val claudioApi: IClaudioApi = ClaudioApi().api
+    private val claudioApi: IClaudioApi = if (BuildKonfig.CLAUDIO_BASE_URL == FAKE_CLAUDIO_URL) {
+        FakeClaudioApi().api
+    } else {
+        ClaudioApi().api
+    }
     private val playerApi: IPlayerApi = FcmApi().api
     private val hookApi: IHookApi = SlackApi().api
     private val database: IClaudioDatabase = if (getPlatform() is Platform.Web) {

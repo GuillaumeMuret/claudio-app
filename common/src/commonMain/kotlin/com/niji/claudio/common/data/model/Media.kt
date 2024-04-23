@@ -27,7 +27,7 @@ expect class Media(
     fromTitle: String? = null,
     // is favorite media
     isFavorite: Boolean? = null,
-    // file size in byte
+    // file creation date
     createdAt: String? = null,
 ) {
     var bddId: Long?

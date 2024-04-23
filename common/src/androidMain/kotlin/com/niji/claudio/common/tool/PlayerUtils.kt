@@ -5,7 +5,6 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.PlaybackParams
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.niji.claudio.common.ClaudioApplication
 import com.niji.claudio.common.PlayerActivity
 import com.niji.claudio.common.data.feature.media.usecase.GetMediaFromServerIdUseCase
@@ -16,12 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import java.io.IOException
 
 actual object PlayerUtils {
     private const val TAG = "PlayerManager"
     private val mediaPlayerList = mutableListOf<MediaPlayer>()
-    private val gson = Gson()
     val killPlayerLiveData = MutableLiveData<Boolean>()
 
     init {
@@ -50,8 +49,9 @@ actual object PlayerUtils {
 
     fun displayPlayerIfPossible(mediaToPlayStr: String?) {
         CoroutineScope(Dispatchers.IO).launch {
-            val mediaToPlay = gson.fromJson(mediaToPlayStr, Media::class.java)
-            displayPlayerIfPossible(mediaToPlay)
+            mediaToPlayStr?.let {
+                displayPlayerIfPossible(Json.decodeFromString<Media>(mediaToPlayStr))
+            }
         }
     }
 
@@ -60,7 +60,7 @@ actual object PlayerUtils {
     }
 
     actual fun playTts(ttsStr: String) {
-        playTts(Gson().fromJson(ttsStr, Tts::class.java))
+        playTts(Json.decodeFromString<Tts>(ttsStr))
     }
 
     actual fun playTts(tts: Tts) {

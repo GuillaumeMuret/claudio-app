@@ -58,7 +58,6 @@ kotlin {
                 implementation(Libs.ktorClientCore)
                 implementation(Libs.ktorClientContentNegotiation)
                 implementation(Libs.ktorSerializationKotlinxJson)
-                implementation(Libs.gson)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -102,7 +101,6 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(Libs.ktorClientIos)
-                implementation(Libs.gson)
                 implementation(Libs.sqlDelightNativeDriver)
             }
         }

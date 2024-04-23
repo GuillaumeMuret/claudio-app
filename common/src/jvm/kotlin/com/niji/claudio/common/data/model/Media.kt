@@ -3,7 +3,6 @@ package com.niji.claudio.common.data.model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,7 +11,6 @@ actual data class Media actual constructor(
     actual var bddId: Long?,
     actual var filePath: String?,
     actual var filename: String?,
-    @SerializedName("id")
     @SerialName("id")
     actual var serverId: String?,
     @SerialName("duration_sec")

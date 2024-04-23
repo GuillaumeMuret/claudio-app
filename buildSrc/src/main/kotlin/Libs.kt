@@ -10,8 +10,6 @@ object Libs {
     const val ktorClientIos: String = "io.ktor:ktor-client-ios:" + Versions.ktor
     const val ktorClientAndroid: String = "io.ktor:ktor-client-android:" + Versions.ktor
     const val ktorClientJava: String = "io.ktor:ktor-client-java:" + Versions.ktor
-    const val ktorClientJs: String = "io.ktor:ktor-client-js:" + Versions.ktor
-    const val gson: String = "com.google.code.gson:gson:" + Versions.gson
     const val buildkonfigGradlePlugin: String =
         "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:" + Versions.buildkonfigGradlePlugin
 

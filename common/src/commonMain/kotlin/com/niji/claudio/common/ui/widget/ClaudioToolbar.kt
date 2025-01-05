@@ -7,18 +7,21 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import com.niji.claudio.common.resources.Res
+import com.niji.claudio.common.resources.ic_toggle_display
 import com.niji.claudio.common.ui.MediasViewModel
 import com.niji.claudio.common.ui.theme.toolbarBackground
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -45,8 +48,8 @@ fun MediasToolbar(mVm: MediasViewModel) {
             }
             IconButton(onClick = { mVm.toggleDisplay() }) {
                 Icon(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_TOGGLE_DISPLAY),
-                    "Toggle display"
+                    painter = painterResource(Res.drawable.ic_toggle_display),
+                    contentDescription = "Toggle display"
                 )
             }
             IconButton(onClick = { mVm.displayDevicesScreen() }) {
@@ -64,12 +67,12 @@ fun DevicesToolbar(mVm: MediasViewModel) {
                 Icon(Icons.Filled.Refresh, "Refresh")
             }
             IconButton(onClick = { mVm.displayDataLogs() }) {
-                Icon(Icons.Filled.List, "Logs")
+                Icon(Icons.AutoMirrored.Filled.List, "Logs")
             }
         },
         navigationIcon = {
             IconButton(onClick = { mVm.displayMediasScreen() }) {
-                Icon(Icons.Filled.ArrowBack, "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
             }
         }
     )
@@ -85,7 +88,7 @@ fun DataLogToolbar(mVm: MediasViewModel) {
         },
         navigationIcon = {
             IconButton(onClick = { mVm.displayDevicesScreen() }) {
-                Icon(Icons.Filled.ArrowBack, "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
             }
         }
     )

@@ -12,6 +12,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("com.android.library")
     id("com.codingfeline.buildkonfig")
     id("com.github.ben-manes.versions")
@@ -39,11 +40,9 @@ kotlin {
         nodejs()
         binaries.executable()
     }
-
     sourceSets {
         all {
             languageSettings {
-                @Suppress("OPT_IN_USAGE")
                 compilerOptions {
                     freeCompilerArgs.add("-Xexpect-actual-classes")
                 }
@@ -58,7 +57,6 @@ kotlin {
                 implementation(Libs.ktorClientCore)
                 implementation(Libs.ktorClientContentNegotiation)
                 implementation(Libs.ktorSerializationKotlinxJson)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
                 /* TODO remove it when the Apple targets will be available through JitPack */
@@ -132,11 +130,11 @@ android {
         minSdk = ProjectVersions.MIN_SDK
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(21)
     }
 }
 
@@ -209,6 +207,12 @@ sqldelight {
     database("ClaudioDatabaseDelight") {
         packageName = "com.niji.claudio.common.internal.repo.save"
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.niji.claudio.common.resources"
+    generateResClass = always
 }
 
 fun getMyProperties(propertyFileName: String = "local"): Properties {

@@ -39,9 +39,12 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niji.claudio.common.resources.Res
+import com.niji.claudio.common.resources.ic_download
 import com.niji.claudio.common.tool.UiUtils
 import com.niji.claudio.common.ui.MediasViewModel
 import com.niji.claudio.common.ui.theme.red
+import org.jetbrains.compose.resources.painterResource
 import kotlin.math.roundToInt
 
 
@@ -156,9 +159,7 @@ fun MediaListColumn(mVm: MediasViewModel) {
                                             if (isDownloadedState != true) {
                                                 IconButton(onClick = { mVm.downloadMedia(it) }) {
                                                     Icon(
-                                                        painter = ClaudioPainterResource.get(
-                                                            ClaudioPainterResourceId.IC_DOWNLOAD
-                                                        ),
+                                                        painter = painterResource(Res.drawable.ic_download),
                                                         contentDescription = "Download",
                                                         tint = MaterialTheme.colors.red,
                                                         modifier = Modifier.width(30.dp)

@@ -23,6 +23,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.niji.claudio.common.data.feature.user.usecase.ToggleAdminProcessUseCase
+import com.niji.claudio.common.resources.Res
+import com.niji.claudio.common.resources.ic_bolt
+import com.niji.claudio.common.resources.ic_fire
+import com.niji.claudio.common.resources.ic_micro
+import com.niji.claudio.common.resources.ic_mute
+import com.niji.claudio.common.resources.ic_sleeping
+import com.niji.claudio.common.resources.ic_smile
+import com.niji.claudio.common.resources.ic_volume_down
+import com.niji.claudio.common.resources.ic_volume_up
 import com.niji.claudio.common.ui.theme.indigo
 import com.niji.claudio.common.ui.theme.mute
 import com.niji.claudio.common.ui.theme.orange
@@ -33,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -57,42 +67,42 @@ fun MediaRemote(
                     .wrapContentHeight()
             ) {
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_BOLT),
+                    painter = painterResource(Res.drawable.ic_bolt),
                     color = MaterialTheme.colors.yellow,
                     contentDescription = "Kill them all",
                     action = { killPlayer.invoke() },
                     mustReload = mustReload
                 )
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_MUTE),
+                    painter = painterResource(Res.drawable.ic_mute),
                     color = MaterialTheme.colors.mute,
                     contentDescription = "Volume mute",
                     action = { volumeMin.invoke() },
                     mustReload = mustReload
                 )
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_VOLUME_DOWN),
+                    painter = painterResource(Res.drawable.ic_volume_down),
                     color = MaterialTheme.colors.indigo,
                     contentDescription = "Volume down",
                     action = { volumeLower.invoke() },
                     mustReload = mustReload
                 )
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_VOLUME_UP),
+                    painter = painterResource(Res.drawable.ic_volume_up),
                     color = MaterialTheme.colors.red,
                     contentDescription = "Volume up",
                     action = { volumeRaise.invoke() },
                     mustReload = mustReload
                 )
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_FIRE),
+                    painter = painterResource(Res.drawable.ic_fire),
                     color = MaterialTheme.colors.orange,
                     contentDescription = "Volume max",
                     action = { volumeMax.invoke() },
                     mustReload = mustReload
                 )
                 Image(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_MICRO),
+                    painter = painterResource(Res.drawable.ic_micro),
                     contentDescription = "Micro",
                     modifier = Modifier.pointerInput(true) {
                         detectTapGestures(onPress = {
@@ -109,9 +119,9 @@ fun MediaRemote(
                 val isSleepingModeState: Boolean by isSleepingMode.collectAsState()
                 IconMediaRemote(
                     image = if (isSleepingModeState) {
-                        ClaudioPainterResource.get(ClaudioPainterResourceId.IC_SLEEP)
+                        painterResource(Res.drawable.ic_sleeping)
                     } else {
-                        ClaudioPainterResource.get(ClaudioPainterResourceId.IC_SMILE)
+                        painterResource(Res.drawable.ic_smile)
                     },
                     contentDescription = "Toggle sleep or awake mode",
                     action = { toggleSleepingMode.invoke() },

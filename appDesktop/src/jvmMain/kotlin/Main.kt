@@ -18,7 +18,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Claudio",
         state = WindowState(WindowPlacement.Maximized),
-        // icon = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_LAUNCHER)
+        // icon = painterResource(Res.drawable.ic_launcher)
     ) {
         ClaudioTheme {
             ClaudioApp(MediasViewModel(), this.window)

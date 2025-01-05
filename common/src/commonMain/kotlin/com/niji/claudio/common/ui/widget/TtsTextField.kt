@@ -22,9 +22,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.niji.claudio.common.resources.Res
+import com.niji.claudio.common.resources.ic_clear
+import com.niji.claudio.common.resources.ic_play
+import com.niji.claudio.common.resources.ic_vibrate
 import com.niji.claudio.common.ui.MediasViewModel
 import com.niji.claudio.common.ui.theme.green
 import com.niji.claudio.common.ui.theme.teal
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TtsTextField(mVm: MediasViewModel) {
@@ -53,7 +58,7 @@ fun TtsTextField(mVm: MediasViewModel) {
             )
             Row(Modifier.wrapContentHeight()) {
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_CLEAR),
+                    painter = painterResource(Res.drawable.ic_clear),
                     color = MaterialTheme.colors.teal,
                     contentDescription = "Clear text",
                     action = {
@@ -63,14 +68,14 @@ fun TtsTextField(mVm: MediasViewModel) {
                     mustReload = {}
                 )
                 IconMediaRemote(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_PLAY),
+                    painter = painterResource(Res.drawable.ic_play),
                     color = MaterialTheme.colors.green,
                     contentDescription = "launch tts",
                     action = mVm::launchTts,
                     mustReload = {}
                 )
                 Image(
-                    painter = ClaudioPainterResource.get(ClaudioPainterResourceId.IC_VIBRATE),
+                    painter = painterResource(Res.drawable.ic_vibrate),
                     contentDescription = "Micro",
                     modifier = Modifier.clickable { mVm.vibrate() }
                         .size(50.dp)

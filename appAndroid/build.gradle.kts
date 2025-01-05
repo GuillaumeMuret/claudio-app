@@ -21,8 +21,8 @@ android {
         setProperty("archivesBaseName", "${ProjectVersions.APP_NAME}-$versionName-$versionCode")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     signingConfigs {
         getByName("debug") {

@@ -1,6 +1,7 @@
 package com.niji.claudio.common.tool
 
 import com.niji.claudio.common.data.model.MediaFile
+import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.usePinned
@@ -11,10 +12,10 @@ import platform.Foundation.NSString
 import platform.Foundation.NSURL
 import platform.Foundation.NSUTF8StringEncoding
 import platform.Foundation.NSUserDomainMask
-import platform.Foundation.URLByAppendingPathComponent
 import platform.Foundation.create
 import platform.Foundation.dataUsingEncoding
 
+@OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 actual object FileUtils {
     private const val TAG = "FileUtils"
 
@@ -31,7 +32,6 @@ actual object FileUtils {
         return ""
     }
 
-    @OptIn(ExperimentalForeignApi::class)
     fun writeFile(filename: String, content: String) {
         val fileManager = NSFileManager.defaultManager
         val fileUrl = (fileManager.URLsForDirectory(NSDocumentDirectory, NSUserDomainMask)

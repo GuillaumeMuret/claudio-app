@@ -36,7 +36,7 @@ actual class MediaFile(filePath: String) {
         if (!directory.exists()) {
             LogUtils.d(TAG, "Cannot create dir -> ${directory.path}")
             LogUtils.d(TAG, "Try create parent -> ${directory.parent}")
-            createDir(File(directory.parent))
+            createDir(File(directory.parent!!))
         } else {
             LogUtils.d(TAG, "Directory created -> ${directory.path}")
         }

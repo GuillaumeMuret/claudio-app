@@ -26,6 +26,9 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### Kotlin ###
+.kotlin
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

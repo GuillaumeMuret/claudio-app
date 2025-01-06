@@ -1,12 +1,8 @@
 package com.niji.claudio.common.tool
 
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.res.ResourceLoader
 import com.niji.claudio.common.data.model.MediaFile
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 
 actual object FileUtils {
 
@@ -20,17 +16,19 @@ actual object FileUtils {
 
     @OptIn(ExperimentalComposeUiApi::class)
     actual suspend fun generateTls(): String {
-        val inputStream = ResourceLoader.Default.load("${DIR_NAME_RAW}/${FILENAME_TLS}")
-        val destinationFile = File("./${DIR_NAME_ROOT}", FILENAME_TLS)
-        if (!destinationFile.exists()) {
-            withContext(Dispatchers.IO) {
-                val outputStream = FileOutputStream(destinationFile)
-                inputStream.copyTo(outputStream)
-                inputStream.close()
-                outputStream.close()
-            }
-        }
-        return destinationFile.path
+        // TODO generate TLS
+        // val inputStream = ResourceLoader.Default.load("${DIR_NAME_RAW}/${FILENAME_TLS}")
+        // val destinationFile = File("./${DIR_NAME_ROOT}", FILENAME_TLS)
+        // if (!destinationFile.exists()) {
+        //     withContext(Dispatchers.IO) {
+        //         val outputStream = FileOutputStream(destinationFile)
+        //         inputStream.copyTo(outputStream)
+        //         inputStream.close()
+        //         outputStream.close()
+        //     }
+        // }
+        // return destinationFile.path
+        return ""
     }
 
     actual fun getMediasDirectoryPath(): String = File("./${DIR_NAME_ROOT}/${DIR_NAME_MEDIAS}").path

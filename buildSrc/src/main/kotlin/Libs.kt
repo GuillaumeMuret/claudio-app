@@ -1,6 +1,5 @@
 object Libs {
     // Common
-    const val appcompat: String = "androidx.appcompat:appcompat:" + Versions.appcompat
     const val coreKtx: String = "androidx.core:core-ktx:" + Versions.coreKtx
     const val ktorClientCore: String = "io.ktor:ktor-client-core:" + Versions.ktor
     const val ktorClientContentNegotiation: String =

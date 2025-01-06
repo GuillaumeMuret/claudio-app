@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
@@ -22,10 +21,11 @@ import androidx.compose.ui.unit.dp
 import com.niji.claudio.common.tool.MediaUtils
 import com.niji.claudio.common.tool.UiUtils
 import com.niji.claudio.common.ui.MediasViewModel
+import com.niji.claudio.common.ui.widget.base.ClaudioAlertDialog
+import com.niji.claudio.common.ui.widget.base.ProgressIndicator
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DialogAddMedia(
     mVm: MediasViewModel,
@@ -130,13 +130,13 @@ fun DialogAddMedia(
 }
 
 sealed class DialogAddMediaViewState {
-    object Show : DialogAddMediaViewState()
+    data object Show : DialogAddMediaViewState()
     class Error(
         val isErrorTitle: Boolean = false,
         val isErrorCategory: Boolean = false,
         val isErrorFilePath: Boolean = false
     ) : DialogAddMediaViewState()
 
-    object Loading : DialogAddMediaViewState()
-    object Hide : DialogAddMediaViewState()
+    data object Loading : DialogAddMediaViewState()
+    data object Hide : DialogAddMediaViewState()
 }

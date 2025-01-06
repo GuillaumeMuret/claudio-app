@@ -58,6 +58,8 @@ kotlin {
                 implementation(Libs.ktorClientContentNegotiation)
                 implementation(Libs.ktorSerializationKotlinxJson)
                 implementation(compose.components.resources)
+                implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+                api("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
 
                 /* TODO remove it when the Apple targets will be available through JitPack */
                 // TODO MQTT LIB ISSUE -> implementation(Libs.mqttLocal)
@@ -76,7 +78,6 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvm)
             dependencies {
-                implementation(Libs.appcompat)
                 implementation(Libs.activityCompose)
                 implementation(Libs.coreKtx)
                 implementation(Libs.firebaseMessaging)

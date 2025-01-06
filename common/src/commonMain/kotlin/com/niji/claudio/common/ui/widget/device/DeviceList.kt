@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.device
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

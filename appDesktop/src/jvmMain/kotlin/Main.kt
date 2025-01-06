@@ -5,8 +5,6 @@ import androidx.compose.ui.window.application
 import com.niji.claudio.common.data.feature.user.usecase.GetUserUseCase
 import com.niji.claudio.common.tool.MqttClientProvider
 import com.niji.claudio.common.ui.ClaudioApp
-import com.niji.claudio.common.ui.MediasViewModel
-import com.niji.claudio.common.ui.theme.ClaudioTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,9 +18,7 @@ fun main() = application {
         state = WindowState(WindowPlacement.Maximized),
         // icon = painterResource(Res.drawable.ic_launcher)
     ) {
-        ClaudioTheme {
-            ClaudioApp(MediasViewModel(), this.window)
-        }
+        ClaudioApp(window = window)
     }
     CoroutineScope(Dispatchers.IO).launch {
         while (true) {

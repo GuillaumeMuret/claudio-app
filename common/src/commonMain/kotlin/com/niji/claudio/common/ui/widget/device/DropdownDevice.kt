@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.device
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.niji.claudio.common.ui.MediasViewModel
+import com.niji.claudio.common.ui.widget.base.ClaudioDropdownMenu
+import com.niji.claudio.common.ui.widget.base.ClaudioDropdownMenuItem
+import com.niji.claudio.common.ui.widget.base.ProgressIndicator
 
 
 @Composable

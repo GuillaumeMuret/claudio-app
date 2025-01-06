@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.media
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -37,6 +37,7 @@ import com.niji.claudio.common.ui.theme.mute
 import com.niji.claudio.common.ui.theme.orange
 import com.niji.claudio.common.ui.theme.red
 import com.niji.claudio.common.ui.theme.yellow
+import com.niji.claudio.common.ui.widget.base.RemoteDivider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope

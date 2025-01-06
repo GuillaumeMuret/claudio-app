@@ -1,6 +1,6 @@
 package com.niji.claudio.common.tool
 
-import com.niji.claudio.common.ui.state.AppViewState
+import com.niji.claudio.common.ui.widget.media.MediaViewState
 
 object UiUtils {
     private const val KYLO_BYTE = 1024
@@ -19,16 +19,16 @@ object UiUtils {
         }
     }
 
-    fun getMediaStateClass(state: String): AppViewState {
+    fun getMediaStateClass(state: String): MediaViewState {
         return if (state == MEDIA_DISPLAY_COLUMN) {
-            AppViewState.MediaDisplayColumn
+            MediaViewState.MediaDisplayColumn
         } else {
-            AppViewState.MediaDisplayGrid
+            MediaViewState.MediaDisplayGrid
         }
     }
 
-    fun getMediaStateString(state: AppViewState): String {
-        return if (state is AppViewState.MediaDisplayColumn) {
+    fun getMediaStateString(state: MediaViewState): String {
+        return if (state is MediaViewState.MediaDisplayColumn) {
             MEDIA_DISPLAY_COLUMN
         } else {
             MEDIA_DISPLAY_GRID

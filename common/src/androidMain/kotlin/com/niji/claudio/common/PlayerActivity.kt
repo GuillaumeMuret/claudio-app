@@ -42,10 +42,11 @@ class PlayerActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        getVideoViewFromPath(getFilePathFromIntent(intent))
-    }
+    // TODO onNewIntent
+    // override fun onNewIntent(intent: Intent?) {
+    //     super.onNewIntent(intent)
+    //     getVideoViewFromPath(getFilePathFromIntent(intent))
+    // }
 
     private fun getFilePathFromIntent(intent: Intent?): String? {
         val filePath = if (intent?.hasExtra(KEY_FILE_PATH) == true) {

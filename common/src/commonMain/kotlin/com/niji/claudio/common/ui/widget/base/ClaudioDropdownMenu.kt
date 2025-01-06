@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.base
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material.DropdownMenu

@@ -1,8 +1,9 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.dialog
 
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import com.niji.claudio.common.ui.widget.base.ClaudioAlertDialog
 
 
 @Composable

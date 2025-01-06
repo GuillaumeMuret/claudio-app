@@ -16,22 +16,23 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.app.ActivityCompat
+import androidx.core.view.WindowCompat
 import com.niji.claudio.common.data.feature.user.usecase.GetUserUseCase
 import com.niji.claudio.common.data.feature.user.usecase.TokenReceivedUseCase
 import com.niji.claudio.common.data.model.Device
 import com.niji.claudio.common.tool.LogUtils
 import com.niji.claudio.common.tool.UserPreferencesUtils
 import com.niji.claudio.common.ui.ClaudioApp
-import com.niji.claudio.common.ui.theme.ClaudioTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class MainActivity : ComponentActivity() {
@@ -39,15 +40,14 @@ class MainActivity : ComponentActivity() {
     private val androidMvm: AndroidMediasViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         instance = this
         setContent {
             val requestPermissionsDialogState: Boolean by androidMvm.mVm.requestPermissionsDialogState.collectAsState()
-            ClaudioTheme {
-                ClaudioApp(androidMvm.mVm, this@MainActivity, ::launchFileChooserIntent)
-                if (requestPermissionsDialogState) {
-                    requestPermission()
-                }
+            ClaudioApp(androidMvm.mVm, this@MainActivity, ::launchFileChooserIntent)
+            if (requestPermissionsDialogState) {
+                requestPermission()
             }
         }
     }

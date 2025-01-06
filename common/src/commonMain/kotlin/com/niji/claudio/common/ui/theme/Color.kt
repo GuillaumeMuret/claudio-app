@@ -2,7 +2,6 @@ package com.niji.claudio.common.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val DarkPrimary = Color(0xFF6bbaff)
@@ -25,10 +24,4 @@ val Indigo700 = Color(0xFF303f9f)
 val Teal300 = Color(0xFF4db6ac)
 val Teal700 = Color(0xFF00796b)
 
-val Grey700 = Color(0xFF616161)
-val Grey800 = Color(0xFF424242)
-
-val Pink = Color(0xFFffb59c)
-
 val BlueGrey700 = Color(0xFF455a64)
-

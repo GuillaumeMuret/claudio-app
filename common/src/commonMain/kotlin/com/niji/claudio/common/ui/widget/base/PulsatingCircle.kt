@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.base
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

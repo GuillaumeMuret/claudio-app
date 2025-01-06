@@ -1,9 +1,9 @@
 import java.net.URI
 
 object ProjectVersions {
-    const val COMPILE_SDK = 34
+    const val COMPILE_SDK = 35
     const val MIN_SDK = 24
-    const val TARGET_SDK = 34
+    const val TARGET_SDK = 35
     const val APP_VERSION_CODE = 99999999
     const val APP_NAME = "Claudio"
     const val PACKAGE_NAME = "com.niji.claudio"

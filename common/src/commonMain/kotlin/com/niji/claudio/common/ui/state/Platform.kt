@@ -7,6 +7,6 @@ open class Platform {
 }
 
 sealed class Type {
-    object Ios : Type()
-    object Android : Type()
+    data object Ios : Type()
+    data object Android : Type()
 }

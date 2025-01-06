@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.base
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
@@ -17,15 +17,17 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import com.niji.claudio.common.resources.Res
 import com.niji.claudio.common.resources.ic_toggle_display
+import com.niji.claudio.common.ui.ClaudioScreens
 import com.niji.claudio.common.ui.MediasViewModel
 import com.niji.claudio.common.ui.theme.toolbarBackground
 import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun MediasToolbar(mVm: MediasViewModel) {
+fun MediasToolbar(mVm: MediasViewModel, navController: NavHostController) {
     val isFavoriteMode = mVm.isFavoriteMode.collectAsState()
     GenericToolbar(
         title = "Medias",
@@ -52,7 +54,7 @@ fun MediasToolbar(mVm: MediasViewModel) {
                     contentDescription = "Toggle display"
                 )
             }
-            IconButton(onClick = { mVm.displayDevicesScreen() }) {
+            IconButton(onClick = { navController.navigate(ClaudioScreens.Device.name) }) {
                 Icon(Icons.Filled.Settings, null)
             }
         }
@@ -60,18 +62,18 @@ fun MediasToolbar(mVm: MediasViewModel) {
 }
 
 @Composable
-fun DevicesToolbar(mVm: MediasViewModel) {
+fun DevicesToolbar(mVm: MediasViewModel, navController: NavHostController) {
     GenericToolbar(title = "Devices",
         actions = {
             IconButton(onClick = { mVm.refreshDevices() }) {
                 Icon(Icons.Filled.Refresh, "Refresh")
             }
-            IconButton(onClick = { mVm.displayDataLogs() }) {
+            IconButton(onClick = { navController.navigate(ClaudioScreens.DataLog.name) }) {
                 Icon(Icons.AutoMirrored.Filled.List, "Logs")
             }
         },
         navigationIcon = {
-            IconButton(onClick = { mVm.displayMediasScreen() }) {
+            IconButton(onClick = { navController.navigateUp() }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
             }
         }
@@ -79,7 +81,7 @@ fun DevicesToolbar(mVm: MediasViewModel) {
 }
 
 @Composable
-fun DataLogToolbar(mVm: MediasViewModel) {
+fun DataLogToolbar(mVm: MediasViewModel, navController: NavHostController) {
     GenericToolbar(title = "Data Logs",
         actions = {
             IconButton(onClick = { mVm.refreshDataLogs() }) {
@@ -87,7 +89,7 @@ fun DataLogToolbar(mVm: MediasViewModel) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = { mVm.displayDevicesScreen() }) {
+            IconButton(onClick = { navController.navigateUp() }) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
             }
         }

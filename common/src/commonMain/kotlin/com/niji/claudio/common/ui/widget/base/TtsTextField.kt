@@ -1,4 +1,4 @@
-package com.niji.claudio.common.ui.widget
+package com.niji.claudio.common.ui.widget.base
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,6 +29,7 @@ import com.niji.claudio.common.resources.ic_vibrate
 import com.niji.claudio.common.ui.MediasViewModel
 import com.niji.claudio.common.ui.theme.green
 import com.niji.claudio.common.ui.theme.teal
+import com.niji.claudio.common.ui.widget.media.IconMediaRemote
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

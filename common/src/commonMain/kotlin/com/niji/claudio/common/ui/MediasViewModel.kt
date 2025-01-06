@@ -1,5 +1,6 @@
 package com.niji.claudio.common.ui
 
+import androidx.lifecycle.ViewModel
 import com.niji.claudio.common.data.feature.device.usecase.DeleteDeviceUseCase
 import com.niji.claudio.common.data.feature.device.usecase.GetDevicesUseCase
 import com.niji.claudio.common.data.feature.log.usecase.GetDataLogs
@@ -37,14 +38,14 @@ import com.niji.claudio.common.tool.LogUtils
 import com.niji.claudio.common.tool.PermissionUtils
 import com.niji.claudio.common.tool.UiUtils
 import com.niji.claudio.common.tool.VoiceRecordService
-import com.niji.claudio.common.ui.state.AppViewState
-import com.niji.claudio.common.ui.widget.DialogAddMediaViewState
+import com.niji.claudio.common.ui.widget.dialog.DialogAddMediaViewState
+import com.niji.claudio.common.ui.widget.media.MediaViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
-class MediasViewModel {
+class MediasViewModel : ViewModel() {
     var showDeviceDialogState = MutableStateFlow(false)
     var showOverAppDialogState = MutableStateFlow(false)
     var requestPermissionsDialogState = MutableStateFlow(false)
@@ -59,7 +60,7 @@ class MediasViewModel {
     var dataLogsState = MutableStateFlow<List<DataLog>>(listOf())
     var currentDevice = MutableStateFlow<Device?>(null)
     var selectedDevice = MutableStateFlow<Device?>(null)
-    var appViewState = MutableStateFlow<AppViewState?>(null)
+    var mediaScreenViewState = MutableStateFlow<MediaViewState?>(null)
     var currentDialogDeviceName = ""
     var ttsText = "Bonjour ${getPlatformName()} Niji"
     var query = MutableStateFlow("")
@@ -72,8 +73,7 @@ class MediasViewModel {
     fun initMediaScreen() {
         CoroutineScope(CoroutineDispatcherProvider.io()).launch {
             showOperationInProgress.value = true
-            appViewState.value =
-                UiUtils.getMediaStateClass(GetUserMediaDisplayPreference().execute())
+            mediaScreenViewState.value = UiUtils.getMediaStateClass(GetUserMediaDisplayPreference().execute())
             mediasState.value = GetLocalMediasUseCase(query.value, isFavoriteMode.value).execute()
             val user = GetUserUseCase().execute()
             LogUtils.d(TAG, "user = $user")
@@ -101,7 +101,7 @@ class MediasViewModel {
         }
     }
 
-    suspend fun checkDisplayOverApp(user: User? = null) {
+    private suspend fun checkDisplayOverApp(user: User? = null) {
         val safeUser = user ?: GetUserUseCase().execute()
         showOverAppDialogState.value =
             (safeUser.isAdmin == false || safeUser.isAdmin == null) && !PermissionUtils.isOverlayPermissionGranted()
@@ -243,33 +243,17 @@ class MediasViewModel {
     }
 
     fun toggleDisplay() {
-        if (appViewState.value is AppViewState.MediaDisplayGrid) {
-            appViewState.value = AppViewState.MediaDisplayColumn
-        } else if (appViewState.value is AppViewState.MediaDisplayColumn) {
-            appViewState.value = AppViewState.MediaDisplayGrid
+        if (mediaScreenViewState.value is MediaViewState.MediaDisplayGrid) {
+            mediaScreenViewState.value = MediaViewState.MediaDisplayColumn
+        } else if (mediaScreenViewState.value is MediaViewState.MediaDisplayColumn) {
+            mediaScreenViewState.value = MediaViewState.MediaDisplayGrid
         }
         CoroutineScope(CoroutineDispatcherProvider.io()).launch {
             SetUserMediaDisplayPreference(
                 UiUtils.getMediaStateString(
-                    appViewState.value ?: AppViewState.MediaDisplayGrid
+                    mediaScreenViewState.value ?: MediaViewState.MediaDisplayGrid
                 )
             ).execute()
-        }
-    }
-
-    fun displayDataLogs() {
-        appViewState.value = AppViewState.DataLog
-        refreshDataLogs()
-    }
-
-    fun displayDevicesScreen() {
-        appViewState.value = AppViewState.DeviceColumn
-    }
-
-    fun displayMediasScreen() {
-        CoroutineScope(CoroutineDispatcherProvider.io()).launch {
-            appViewState.value =
-                UiUtils.getMediaStateClass(GetUserMediaDisplayPreference().execute())
         }
     }
 

@@ -246,14 +246,6 @@ tasks.register("checkGoogleServices") {
 
 tasks.getByName("preBuild").dependsOn("checkGoogleServices")
 
-// Task to remove when workaround fixed
-tasks.register("copyJsResourcesWorkaround", Copy::class.java) {
-    from(project(":common").file("src/commonMain/resources"))
-    into(project(":appJs").file("build/processedResources/js/main"))
-}
-
-tasks.getByName("jsJar").dependsOn("copyJsResourcesWorkaround")
-
 fun checkGoogleServices() {
     val googleServices =
         File(project.projectDir.absolutePath + "/../appAndroid/google-services.json")

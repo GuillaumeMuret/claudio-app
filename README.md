@@ -64,19 +64,6 @@ The FCM server key used to send messages :
 
 This section explain the special configuration you must do to build and run app correctly :
 
-### Android
-
-You have to add the `google-services.json` in the `appAndroid` module to use the FCM service 
-correctly. 
-
-Ask a developer to get the file 😊
-
-### JavaScript
-
-There is an issue with the resources embedded on the app.
-
-To add the resources we use a gradle task named copyJsResourcesWorkaround.
-
 # Tools
 
 Some tools has been added on this project :

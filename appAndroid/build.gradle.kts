@@ -1,9 +1,9 @@
 plugins {
-    id("org.jetbrains.compose")
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    kotlin("android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
 }
 
 dependencies {
@@ -11,12 +11,12 @@ dependencies {
 }
 
 android {
-    compileSdk = ProjectVersions.COMPILE_SDK
+    compileSdk = libs.versions.android.compile.sdk.get().toInt()
     namespace = ProjectVersions.PACKAGE_NAME_ANDROID
     defaultConfig {
         applicationId = ProjectVersions.PACKAGE_NAME_ANDROID
-        minSdk = ProjectVersions.MIN_SDK
-        targetSdk = ProjectVersions.TARGET_SDK
+        minSdk = libs.versions.android.min.sdk.get().toInt()
+        targetSdk = libs.versions.android.target.sdk.get().toInt()
         versionCode = ProjectVersions.getAppVersionCode()
         versionName = ProjectVersions.getAppVersionName()
         setProperty("archivesBaseName", "${ProjectVersions.APP_NAME}-$versionName-$versionCode")

@@ -68,10 +68,6 @@ This section explain the special configuration you must do to build and run app 
 
 Some tools has been added on this project :
 
-## Check dependencies to update
-
-`./gradlew dependencyUpdates -Drevision=release`
-
 ## Scripts to test FCM and app
 
 This section will present the script you can use to test app with FCM messages and the API. 

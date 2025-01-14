@@ -1,36 +1,27 @@
+import java.net.URI
+
 plugins {
-    // this is necessary to avoid the plugins to be loaded multiple times
-    // in each subproject's classloader
-    kotlin("jvm") apply false
-    kotlin("multiplatform") apply false
-    kotlin("android") apply false
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.compose") apply false
-    id("org.jetbrains.kotlin.plugin.compose") apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.codingfeline.buildkonfig) apply false
+    alias(libs.plugins.sqldelight) apply false
+    alias(libs.plugins.google.services) apply false
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(ProjectVersions.MAVEN_JETBRAINS_COMPOSE)
-        maven(ProjectVersions.MAVEN_JITPACK)
+        maven(URI.create("https://maven.pkg.jetbrains.space/public/p/compose/dev"))
+        maven(URI.create("https://jitpack.io"))
         // TODO MQTT LIB ISSUE -> Deprecated but useful for mqtt libraries
         // TODO MQTT LIB ISSUE -> jcenter()
         // TODO MQTT LIB ISSUE -> Use maven local for MQTT
         // TODO MQTT LIB ISSUE -> mavenLocal()
-    }
-}
-
-buildscript {
-    val kotlinVersion = extra["kotlin.version"] as String
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath(Libs.pluginGoogleServices)
-        classpath(Libs.buildkonfigGradlePlugin)
-        classpath(Libs.sqlDelightGradlePlugin)
-        // To check dependencies updates
-        classpath(Libs.benManes)
     }
 }

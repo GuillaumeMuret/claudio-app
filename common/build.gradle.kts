@@ -1,7 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.INT
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.nio.file.Files
@@ -9,14 +8,13 @@ import java.nio.file.StandardCopyOption
 import java.util.Properties
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("com.android.library")
-    id("com.codingfeline.buildkonfig")
-    id("com.github.ben-manes.versions")
-    id(Libs.sqlDelightPlugin)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.codingfeline.buildkonfig)
+    alias(libs.plugins.sqldelight)
 }
 
 val properties = getMyProperties()
@@ -54,12 +52,13 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.runtime)
-                implementation(Libs.ktorClientCore)
-                implementation(Libs.ktorClientContentNegotiation)
-                implementation(Libs.ktorSerializationKotlinxJson)
                 implementation(compose.components.resources)
-                implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
-                api("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.lifecycle.viewmodel.compose)
+                implementation(libs.sqldelight.runtime)
+                api(libs.navigation.compose)
 
                 /* TODO remove it when the Apple targets will be available through JitPack */
                 // TODO MQTT LIB ISSUE -> implementation(Libs.mqttLocal)
@@ -68,8 +67,6 @@ kotlin {
                 /* TODO use it when the Apple targets will be available through JitPack
                 implementation(Libs.mqtt)
                 implementation(Libs.mqttClient) */
-
-                implementation(Libs.sqlDelightRuntime)
             }
         }
         val jvm by creating {
@@ -78,13 +75,13 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvm)
             dependencies {
-                implementation(Libs.activityCompose)
-                implementation(Libs.coreKtx)
-                implementation(Libs.firebaseMessaging)
-                implementation(Libs.ktorClientAndroid)
-                implementation(Libs.media3ExoPlayer)
-                implementation(Libs.media3Ui)
-                implementation(Libs.sqlDelightAndroidDriver)
+                implementation(libs.activity.compose)
+                implementation(libs.core.ktx)
+                implementation(libs.firebase.messaging.ktx)
+                implementation(libs.ktor.client.android)
+                implementation(libs.media3.exoplayer)
+                implementation(libs.media3.ui)
+                implementation(libs.sqldelight.android.driver)
             }
         }
         val desktopMain by getting {
@@ -92,15 +89,15 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
-                implementation(Libs.ktorClientJava)
-                implementation(Libs.sqlDelightSqliteDriver)
+                implementation(libs.ktor.client.java)
+                implementation(libs.sqldelight.sqlite.driver)
             }
         }
         val iosMain by creating {
             dependsOn(commonMain)
             dependencies {
-                implementation(Libs.ktorClientIos)
-                implementation(Libs.sqlDelightNativeDriver)
+                implementation(libs.ktor.client.ios)
+                implementation(libs.sqldelight.native.driver)
             }
         }
         val iosX64Main by getting {
@@ -116,19 +113,19 @@ kotlin {
             dependencies {
                 implementation(compose.html.core)
                 implementation(compose.runtime)
-                implementation(Libs.sqlDelightJsDriver)
+                implementation(libs.sqldelight.sqljs.driver)
             }
         }
     }
 }
 
 android {
-    compileSdk = ProjectVersions.COMPILE_SDK
+    compileSdk = libs.versions.android.compile.sdk.get().toInt()
     namespace = ProjectVersions.PACKAGE_NAME_SHARED
     sourceSets["main"].res.setSrcDirs(listOf("src/commonMain/resources"))
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = ProjectVersions.MIN_SDK
+        minSdk = libs.versions.android.min.sdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
@@ -136,20 +133,6 @@ android {
     }
     kotlin {
         jvmToolchain(21)
-    }
-}
-
-// https://github.com/ben-manes/gradle-versions-plugin
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
-}
-
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf {
-        isNonStable(candidate.version)
     }
 }
 
@@ -250,8 +233,7 @@ fun checkGoogleServices() {
     val googleServices =
         File(project.projectDir.absolutePath + "/../appAndroid/google-services.json")
     if (!googleServices.exists()) {
-        val fakeGoogleServices =
-            File(project.projectDir.absolutePath + "/../appAndroid/fake-google-services.json")
+        val fakeGoogleServices = File(project.projectDir.absolutePath + "/../appAndroid/fake-google-services.json")
         Files.copy(
             fakeGoogleServices.toPath(),
             googleServices.toPath(),
